@@ -16,9 +16,19 @@ namespace JewelleryManagementSystem.UIUtilities
     /// </summary>
     public partial class MainWindow : Window
     {
-        public MainWindow()
+        private JewelleryManagementSystemComponent _component;
+        public MainWindow(JewelleryManagementSystemComponent component)
         {
             InitializeComponent();
+            _component = component;
+            this.Title = ProductInformation.ProductName;
+            this.Loaded += (o, e) => OnLoaded();
+            _component = component;
+        }
+        private void OnLoaded()
+        {
+            this.Content = new JewelleryManagementComponentControl(_component);
+
         }
     }
 }

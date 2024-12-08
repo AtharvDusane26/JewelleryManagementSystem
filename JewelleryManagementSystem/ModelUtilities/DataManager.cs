@@ -12,11 +12,25 @@ namespace JewelleryManagementSystem.ModelUtilities
 {
     public class DataManager
     {
-        public static void Save<T>(T serializableObject, string filePath, DataContractSerializerSettings settings = null)
+        private static DataContractSerializerSettings Settings
+        {
+            get
+            {
+                return new DataContractSerializerSettings()
+                {
+                    KnownTypes = AppDomain.CurrentDomain
+                    .GetAssemblies()
+                    .SelectMany(assembly => assembly.GetTypes())
+                    .Where(type => type.IsClass && type.GetCustomAttributes(typeof(DataContractAttribute), true).Any())
+                    .ToList()
+                };
+            }
+        }
+        public static void Save<T>(T serializableObject, string filePath)
         {
             try
             {
-                DataContractSerializer serializer = new DataContractSerializer(typeof(T), settings);
+                DataContractSerializer serializer = new DataContractSerializer(typeof(T), Settings);
 
                 using (FileStream fileStream = new FileStream(filePath, FileMode.Create))
                 using (XmlWriter writer = XmlWriter.Create(fileStream))
@@ -24,16 +38,16 @@ namespace JewelleryManagementSystem.ModelUtilities
                     serializer.WriteObject(writer, serializableObject);
                 }
             }
-            catch (Exception ex)
+            catch
             {
-                CommonActions.OnError?.Invoke("Error in Save");
+                throw;
             }
         }
-        public static T Read<T>(string filePath, DataContractSerializerSettings settings = null)
+        public static T Read<T>(string filePath)
         {
             try
             {
-                DataContractSerializer serializer = new DataContractSerializer(typeof(T), settings);
+                DataContractSerializer serializer = new DataContractSerializer(typeof(T), Settings);
 
                 using (FileStream fileStream = new FileStream(filePath, FileMode.Open))
                 {
@@ -42,11 +56,9 @@ namespace JewelleryManagementSystem.ModelUtilities
                     return obj;
                 }
             }
-            catch (Exception ex)
+            catch
             {
-                // Log error details
-                CommonActions.OnError?.Invoke("Error in Read");
-                return default;
+                throw;
             }
         }
     }

@@ -1,0 +1,21 @@
+﻿<?xml version='1.0' encoding='utf-8'?>
+<SettingsFile xmlns="http://schemas.microsoft.com/VisualStudio/2004/01/settings" CurrentProfile="(Default)" GeneratedClassNamespace="JewelleryManagementSystem" GeneratedClassName="GeneralSettings">
+  <Profiles />
+  <Settings>
+    <Setting Name="BaseDirectory" Type="System.String" Scope="User">
+      <Value Profile="(Default)" />
+    </Setting>
+    <Setting Name="MetalDirectory" Type="System.String" Scope="User">
+      <Value Profile="(Default)">Metals</Value>
+    </Setting>
+    <Setting Name="OrnamentDirectory" Type="System.String" Scope="User">
+      <Value Profile="(Default)">Ornaments</Value>
+    </Setting>
+    <Setting Name="CustomerDirectory" Type="System.String" Scope="User">
+      <Value Profile="(Default)">Customers</Value>
+    </Setting>
+    <Setting Name="LastCustomerID" Type="System.String" Scope="User">
+      <Value Profile="(Default)" />
+    </Setting>
+  </Settings>
+</SettingsFile>
