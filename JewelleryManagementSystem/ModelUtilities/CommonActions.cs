@@ -6,6 +6,7 @@ using System.Runtime.CompilerServices;
 using System.Runtime.Serialization;
 using System.Text;
 using System.Threading.Tasks;
+using System.Xml.Linq;
 
 namespace JewelleryManagementSystem.ModelUtilities
 {
@@ -26,6 +27,10 @@ namespace JewelleryManagementSystem.ModelUtilities
         protected void OnPropertyChanged([CallerMemberName] string name = null)
         {
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(name));
+        }
+        public void OnAllPropertyChanged()
+        {
+            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(""));
         }
     }
 }

@@ -6,17 +6,6 @@
         xmlns:local="clr-namespace:JewelleryManagementSystem"
         mc:Ignorable="d"  WindowState="Maximized" ResizeMode="CanResizeWithGrip" Background="#f1d9fa"
        >
-    <Window.Resources>
-        <Style TargetType="Button">
-            <Setter Property="Height" Value="25"></Setter>
-            <Setter Property="Width" Value="100"></Setter>
-            <Setter Property="Background" Value="Purple"></Setter>
-            <Setter Property="Foreground" Value="White"></Setter>
-            <Setter Property="BorderBrush" Value="White"></Setter>
-            <Setter Property="BorderThickness" Value="1"></Setter>
-            <Setter Property="FontWeight" Value="DemiBold"></Setter>
-        </Style>
-    </Window.Resources>
     <Grid>
 
     </Grid>

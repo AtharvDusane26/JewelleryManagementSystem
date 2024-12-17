@@ -47,10 +47,21 @@
                 </StackPanel>
             </Grid>
         </GroupBox>
-        <DataGrid x:Name="dataGridOrders" ItemsSource="{Binding OrderListObservable}" Grid.Row="1" VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Auto" AutoGenerateColumns="False">
+        <DataGrid x:Name="dataGridOrders" ItemsSource="{Binding OrderListObservable}" MouseDoubleClick="dataGridOrders_MouseDoubleClick" Grid.Row="1" VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Auto" AutoGenerateColumns="False">
             <DataGrid.Columns>
                 <DataGridTextColumn Header="Order Id" Binding="{Binding OrderID}"></DataGridTextColumn>
+                <DataGridTemplateColumn Header="Jewelleries">
+                    <DataGridTemplateColumn.CellTemplate>
+                        <DataTemplate>
+                            <ComboBox ItemsSource="{Binding PurchasedJewelleries}" SelectedIndex="0"></ComboBox>
+                        </DataTemplate>
+                    </DataGridTemplateColumn.CellTemplate>
+                </DataGridTemplateColumn>
                 <DataGridTextColumn Header="Total Amount" Binding="{Binding TotalAmount}"></DataGridTextColumn>
+                <DataGridTextColumn Header="Discount Amount" Binding="{Binding DiscountGiven}"></DataGridTextColumn>
+                <DataGridTextColumn Header="Remaining Amount" Binding="{Binding RemainingAmount}"></DataGridTextColumn>
+                <DataGridTextColumn Header="Order Status" Binding="{Binding OrderStatus}"></DataGridTextColumn>
+
             </DataGrid.Columns>
         </DataGrid>
         <Button x:Name="btnCreateOrder" Content="Create Order" Grid.Row="2" HorizontalAlignment="Left" VerticalAlignment="Top" Click="btnCreateOrder_Click"></Button>

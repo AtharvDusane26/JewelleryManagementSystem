@@ -32,6 +32,7 @@ namespace JewelleryManagementSystem.CustomerManagement.View
 
         private void btnCreateOrder_Click(object sender, RoutedEventArgs e)
         {
+            var noUse = _customerManager.OrderManager.GetNewOrder();
             var newOrderWindow = new NewOrderWindow(_customerManager.OrderManager);
             newOrderWindow.Owner = this;
             newOrderWindow.ShowDialog();
@@ -39,10 +40,27 @@ namespace JewelleryManagementSystem.CustomerManagement.View
         }
         private void UpdateDataGridVisibility()
         {
-            if(_customerManager.Customer.OrderList != null && _customerManager.Customer.OrderList.Count > 0)
+            if (_customerManager.Customer.OrderList != null && _customerManager.Customer.OrderList.Count > 0)
                 dataGridOrders.Visibility = Visibility.Visible;
-            dataGridOrders.Visibility = Visibility.Collapsed;
+            else
+                dataGridOrders.Visibility = Visibility.Collapsed;
 
+        }
+
+        private void dataGridOrders_MouseDoubleClick(object sender, MouseButtonEventArgs e)
+        {
+            if (sender is DataGrid grid)
+            {
+                IOrder order = grid.SelectedItem as IOrder;
+                if (order != null)
+                {
+                    var newOrderWindow = new NewOrderWindow(_customerManager.OrderManager, order);
+                    newOrderWindow.Owner = this;
+                    newOrderWindow.btnAddOrder.Content = "Update";
+                    newOrderWindow.ShowDialog();
+                    UpdateDataGridVisibility();
+                }
+            }
         }
     }
 }

@@ -1,4 +1,6 @@
 ﻿using JewelleryManagementSystem.CustomerManagement.Model;
+using JewelleryManagementSystem.ModelUtilities;
+using JewelleryManagementSystem.OrnamentManagement.Model;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -21,11 +23,119 @@ namespace JewelleryManagementSystem.CustomerManagement.View
     public partial class NewOrderWindow : Window
     {
         private OrderManager _orderManager;
-        public NewOrderWindow(OrderManager orderManager)
+        private IJewellery _jewellery = null;
+        public NewOrderWindow(OrderManager orderManager, IOrder order = null)
         {
             InitializeComponent();
             _orderManager = orderManager;
-            DataContext = orderManager.GetNewOrder();
+            DataContext = order != null ? order : orderManager.Order;
+            Build();
+        }
+        private void Build()
+        {
+            jewelleryControl.cmbJewellery.ItemsSource = _orderManager.OrnamentManager.AvailableOrnaments;
+            jewelleryControl.cmbJewellery.SelectionChanged += cmbJewellery_SelectionChanged;
+            jewelleryControl.btnAddJewellery.Click += btnAddJewellery_Click;
+        }
+
+        private void cmbJewellery_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            if (sender is ComboBox comboBox)
+            {
+                var selectedOrnament = comboBox.SelectedItem as Ornament;
+                if ((selectedOrnament != null))
+                {
+                    if (selectedOrnament.MakingCharges == null)
+                        selectedOrnament.UpdatedRateAndMaking();
+                    _jewellery = new Jewellery();
+                    _jewellery.Ornament = selectedOrnament.Clone();
+                    jewelleryControl.DataContext = _jewellery;
+                    if (_jewellery is CommonComponent component)
+                        component.OnAllPropertyChanged();
+                }
+            }
+        }
+
+        private void btnAddJewellery_Click(object sender, RoutedEventArgs e)
+        {
+            if (_jewellery != null)
+            {
+                if (_jewellery.Weight <= 0 || _jewellery.TotalAmount <= 0)
+                { return; }
+                var result = MessageBox.Show("Do you want to confirm", ProductInformation.ProductName, MessageBoxButton.YesNo, MessageBoxImage.Question);
+                if (result == MessageBoxResult.Yes)
+                    _orderManager.Order.AddJewellery(_jewellery);
+                ResetUI();
+            }
+        }
+
+        private void btnUpdatePaid_Click(object sender, RoutedEventArgs e)
+        {
+            _orderManager.Order.UpdatePaidAmount();
+        }
+        private void DataGrid_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            if (sender is DataGrid grid)
+            {
+                _jewellery = grid.SelectedItem as IJewellery;
+                if (_jewellery != null)
+                {
+                    jewelleryControl.cmbJewellery.SelectedItem = _orderManager.OrnamentManager.AvailableOrnaments.Where(o => o.Equals(_jewellery.Ornament)).FirstOrDefault();
+                }
+            }
+        }
+        private void ResetUI()
+        {
+            jewelleryControl.cmbJewellery.SelectedIndex = -1;
+            _jewellery = null;
+            jewelleryControl.DataContext = null;
+        }
+
+        private void RemoveJewellery()
+        {
+            if (_jewellery != null)
+            {
+                _orderManager.Order.RemoveJewellery(_jewellery);
+                ResetUI();
+            }
+        }
+
+        private void Button_Click(object sender, RoutedEventArgs e)
+        {
+            var result = MessageBox.Show("Do you want to confirm order?", ProductInformation.ProductName, MessageBoxButton.YesNo, MessageBoxImage.Question);
+            if (result == MessageBoxResult.Yes)
+            {
+                if (_orderManager.AddOrUpdateOrder())
+                    MessageBox.Show("Order Confirmed", ProductInformation.ProductName, MessageBoxButton.OK, MessageBoxImage.Information);
+                else
+                    MessageBox.Show("Order Cancelled", ProductInformation.ProductName, MessageBoxButton.OK, MessageBoxImage.Information);
+            }
+        }
+
+        private void DataGrid_MouseDoubleClick(object sender, MouseButtonEventArgs e)
+        {
+            if (sender is DataGrid grid)
+            {
+                _jewellery = grid.SelectedItem as IJewellery;
+                if (_jewellery != null)
+                {
+                    var window = new Window();
+                    var content = new AddJewelleryControl(_jewellery, RemoveJewellery);
+                    content.btnRemoveJewellery.IsEnabled = !_orderManager.Order.IsCompleted;
+                    window.Content = content;
+                    window.Owner = this;
+                    window.ResizeMode = ResizeMode.NoResize;
+                    window.MaxHeight = 200;
+                    window.MaxWidth = 300;
+                    window.WindowStartupLocation = WindowStartupLocation.CenterOwner;
+                    window.Closing += (o, e) =>
+                    {
+                        if (_orderManager.Order is CommonComponent component)
+                            component.OnAllPropertyChanged();
+                    };
+                    window.ShowDialog();
+                }
+            }
         }
     }
 }

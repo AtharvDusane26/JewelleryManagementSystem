@@ -11,18 +11,18 @@ namespace JewelleryManagementSystem.CustomerManagement.Model
 {
     public interface IJewellery
     {
-        Ornament Ornament { get; }
+        Ornament Ornament { get; set; }
         float Weight { get; }
-        WeightType WeightType { get; }
+        WeightType SelectedWeightType { get; }
         float TotalAmount { get; }
+        string MakingChargesPerGram { get; }
     }
     [DataContract]
     public class Jewellery : CommonComponent, IJewellery
     {
         private Ornament _ornament;
         private float _totalAmount;
-        private float _weight;
-        private WeightType _weightType;
+        private float _weight = 0f;
         [DataMember]
         public Ornament Ornament
         {
@@ -32,6 +32,7 @@ namespace JewelleryManagementSystem.CustomerManagement.Model
                 if (_ornament == value) return;
                 _ornament = value;
                 OnPropertyChanged(nameof(Ornament));
+                CalculateTotalAmount();
             }
         }
         [DataMember]
@@ -43,6 +44,7 @@ namespace JewelleryManagementSystem.CustomerManagement.Model
                 if (_weight == value) return;
                 _weight = value;
                 OnPropertyChanged(nameof(Weight));
+                CalculateTotalAmount();
             }
         }
         [DataMember]
@@ -56,31 +58,41 @@ namespace JewelleryManagementSystem.CustomerManagement.Model
                 OnPropertyChanged(nameof(TotalAmount));
             }
         }
-        [DataMember]
-        public WeightType WeightType
+        [IgnoreDataMember]
+        public WeightType SelectedWeightType => WeightType.InGram;
+        [IgnoreDataMember]
+        public string MakingChargesPerGram
         {
-            get => _weightType;
-            set
+            get
             {
-                if (_weightType == value) return;
-                _weightType = value;
-                OnPropertyChanged(nameof(WeightType));
+                if (Ornament != null && Ornament.MakingCharges != null)
+                {
+                    if (Ornament.MakingChargeType == WeightType.LumSumForMakingOnly)
+                    {
+                        return $"{Ornament.MakingCharges.Value} Rs. (lum sum)";
+                    }
+                    else
+                    {
+                        return $"{GetRatePerGram(Ornament.MakingCharges.Value, Ornament.MakingChargeType)} Rs. per gram";
+                    }
+                }
+                return "0";
             }
         }
         public void CalculateTotalAmount()
         {
-            if (Ornament != null)
+            if (Ornament != null && Weight != 0 && SelectedWeightType != null)
             {
                 var metalRateInGram = GetRatePerGram(Ornament.Metal.MetalRate, Ornament.Metal.WeightTypeForRate);
-                var weightInGram = GetRatePerGram(Weight, WeightType);
+                var weightInGram = GetRatePerGram(Weight, SelectedWeightType);
                 if (Ornament.MakingChargeType == WeightType.LumSumForMakingOnly)
                 {
-                    _totalAmount = (metalRateInGram * weightInGram) + Ornament.MakingCharges;
+                    TotalAmount = (metalRateInGram * weightInGram) + Ornament.MakingCharges.Value;
                 }
                 else
                 {
-                    var makingChagesInGram = GetRatePerGram(Ornament.MakingCharges, Ornament.MakingChargeType);
-                    _totalAmount = (metalRateInGram + makingChagesInGram) * weightInGram;
+                    var makingChagesInGram = GetRatePerGram(Ornament.MakingCharges.Value, Ornament.MakingChargeType);
+                    TotalAmount = (metalRateInGram + makingChagesInGram) * weightInGram;
                 }
             }
         }
@@ -100,6 +112,17 @@ namespace JewelleryManagementSystem.CustomerManagement.Model
                     return 0;
             }
         }
-
+        public override string ToString()
+        {
+            return Ornament?.Name;
+        }
+        public override bool Equals(object? obj)
+        {
+            if (ReferenceEquals(null, obj)) return false;
+            var jewelleryObj = obj as IJewellery;
+            if (jewelleryObj == null) return false;
+            if(jewelleryObj.Ornament.ToString() == Ornament?.ToString() && jewelleryObj.Weight == Weight && jewelleryObj.TotalAmount == TotalAmount) return true;
+            return false;
+        }
     }
 }

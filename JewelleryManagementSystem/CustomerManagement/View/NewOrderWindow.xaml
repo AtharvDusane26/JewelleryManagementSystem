@@ -5,8 +5,91 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:JewelleryManagementSystem.CustomerManagement.View"
         mc:Ignorable="d"  WindowStartupLocation="CenterOwner"
-        Height="400" Width="700" ResizeMode="NoResize" Background="#f1d9fa" ShowInTaskbar="False">
+        Height="400" Width="780" ResizeMode="NoResize" Background="#f1d9fa" ShowInTaskbar="False">
     <Grid>
-        
+        <Grid.RowDefinitions>
+            <RowDefinition Height="9*"></RowDefinition>
+            <RowDefinition Height="1*"></RowDefinition>
+        </Grid.RowDefinitions>
+    <Grid Margin="3">
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="5.5*"></ColumnDefinition>
+            <ColumnDefinition Width="4.5*"></ColumnDefinition>
+        </Grid.ColumnDefinitions>
+            <Grid Grid.Column="1">
+                <Grid.RowDefinitions>
+                    <RowDefinition></RowDefinition>
+                    <RowDefinition></RowDefinition>
+                </Grid.RowDefinitions>
+                <local:AddJewelleryControl x:Name="jewelleryControl"></local:AddJewelleryControl>
+                <Grid Grid.Row="1">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="auto"></ColumnDefinition>
+                        <ColumnDefinition></ColumnDefinition>
+                    </Grid.ColumnDefinitions>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="auto"></RowDefinition>
+                        <RowDefinition Height="auto"></RowDefinition>
+                    </Grid.RowDefinitions>
+                    <TextBlock Grid.Row="0" Grid.Column="0" Text="Order Date:" FontWeight="Bold"/>
+                    <DatePicker Grid.Row="0" Grid.Column="1" SelectedDate="{Binding OrderPlacedDate}"  Margin="5"/>
+
+                    <TextBlock Grid.Row="1" Grid.Column="0" Text="Order Complete On:" FontWeight="Bold"/>
+                    <DatePicker Grid.Row="1" Grid.Column="1" SelectedDate="{Binding OrderToBeCompleteDate}"  Margin="5"/>
+                </Grid>
+            </Grid>
+            <Grid Grid.Column="0">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="*"/>
+                <RowDefinition Height="Auto"/>
+            </Grid.RowDefinitions>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="Auto"/>
+                <ColumnDefinition Width="*"/>
+            </Grid.ColumnDefinitions>
+
+            <!-- Order Information Section -->
+            <TextBlock Grid.Row="0" Grid.Column="0" Text="Order ID:" FontWeight="Bold"/>
+            <TextBox Grid.Row="0" Grid.Column="1" Text="{Binding OrderID , Mode=OneWay}" HorizontalAlignment="Left" IsReadOnly="True" Margin="5"/>
+
+            <TextBlock Grid.Row="1" Grid.Column="0" Text="Order Status:" FontWeight="Bold"/>
+            <TextBox Grid.Row="1" Grid.Column="1" Text="{Binding OrderStatus, Mode=OneWay}" HorizontalAlignment="Left" IsReadOnly="True" Margin="5"/>
+
+            <TextBlock Grid.Row="2" Grid.Column="0" Text="Total Amount:" FontWeight="Bold"/>
+            <TextBox Grid.Row="2" Grid.Column="1" Text="{Binding TotalAmount , Mode=OneWay}" HorizontalAlignment="Left" IsReadOnly="True" Margin="5"/>
+
+            <TextBlock Grid.Row="3" Grid.Column="0" Text="Paid Amount:" FontWeight="Bold"/>
+            <StackPanel Orientation="Horizontal" Grid.Row="3" Grid.Column="1">
+                <TextBox x:Name="txtPaidAmount" Text="{Binding PaidAmount}" Width="100" Margin="5"/>
+                <Button x:Name="btnUpdatePaid" Content="*" Height="25" Width="30" Margin="2"  Click="btnUpdatePaid_Click"></Button>
+                <CheckBox Content="Mark as Complete" IsChecked="{Binding IsCompleted}" VerticalAlignment="Center"></CheckBox>
+            </StackPanel>
+
+            <TextBlock Grid.Row="4" Grid.Column="0" Text="Discount Given:" FontWeight="Bold"/>
+            <TextBox Grid.Row="4" Grid.Column="1" Text="{Binding DiscountGiven}" HorizontalAlignment="Left" Margin="5"/>
+
+            <TextBlock Grid.Row="5" Grid.Column="0" Text="Remaining Amount:" FontWeight="Bold"/>
+            <TextBox Grid.Row="5" Grid.Column="1" Text="{Binding RemainingAmount , Mode=OneWay}" HorizontalAlignment="Left" IsReadOnly="True" Margin="5"/>
+            
+            <!-- Jewellries List Section -->
+            <TextBlock Grid.Row="6" Grid.Column="0" Text="Purchased Jewelleries" FontWeight="Bold"/>
+            <DataGrid Grid.Row="6" Grid.Column="1"  ItemsSource="{Binding PurchasedJewelleriesObservable}" MouseDoubleClick="DataGrid_MouseDoubleClick" Height="100" HorizontalScrollBarVisibility="Auto" AutoGenerateColumns="False">
+                <DataGrid.Columns>
+                    <DataGridTextColumn Header="Ornament" Binding="{Binding Ornament}"></DataGridTextColumn>
+                    <DataGridTextColumn Header="Weight(grm.)" Binding="{Binding Weight}"></DataGridTextColumn>
+                    <DataGridTextColumn Header="Total Amount" Binding="{Binding TotalAmount}"></DataGridTextColumn>
+                </DataGrid.Columns>
+            </DataGrid>
+            <!-- Paid Amount Section -->           
+            <!-- Add Jewellery Section -->
+        </Grid>
+    </Grid>
+        <Button x:Name="btnAddOrder" Grid.Row="1" Content="Add Order"  Width="100" HorizontalAlignment="Center" Click="Button_Click" Margin="5"/>
     </Grid>
 </Window>

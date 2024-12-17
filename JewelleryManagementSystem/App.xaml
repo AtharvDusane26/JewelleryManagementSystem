@@ -27,15 +27,56 @@
             <Setter Property="Foreground" Value="Black"></Setter>
             <Setter Property="Height" Value="25"></Setter>
             <Setter Property="Width" Value="160"></Setter>
+            <Setter Property="Background" Value="LightPink"></Setter>
+            <Setter Property="BorderBrush" Value="HotPink"></Setter>
+        </Style>
+        <Style TargetType="DatePicker">
+            <Setter Property="VerticalAlignment" Value="Center" />
+            <Setter Property="Foreground" Value="Black" />
+            <Setter Property="Height" Value="30" />
+            <Setter Property="Width" Value="160" />
+            <Setter Property="Background" Value="LightPink" />
+            <Setter Property="BorderBrush" Value="HotPink" />
+            <Setter Property="BorderThickness" Value="1" />
+            <Setter Property="FontWeight" Value="DemiBold"></Setter>
         </Style>
         <Style TargetType="Button">
             <Setter Property="Height" Value="25"></Setter>
             <Setter Property="Width" Value="100"></Setter>
-            <Setter Property="Background" Value="Purple"></Setter>
-            <Setter Property="Foreground" Value="White"></Setter>
+            <Setter Property="Background" Value="DeepPink"></Setter>
+            <Setter Property="Foreground" Value="Black"></Setter>
             <Setter Property="BorderBrush" Value="White"></Setter>
             <Setter Property="BorderThickness" Value="1"></Setter>
             <Setter Property="FontWeight" Value="DemiBold"></Setter>
+        </Style>
+        <Style TargetType="DataGrid">
+            <Setter Property="Background" Value="Pink"/>
+            <Setter Property="GridLinesVisibility" Value="All"/>
+            <Setter Property="HorizontalGridLinesBrush" Value="White"/>
+            <Setter Property="VerticalGridLinesBrush" Value="White"/>
+            <Setter Property="RowBackground" Value="LightPink"/>
+            <Setter Property="AlternatingRowBackground" Value="LavenderBlush"/>
+            <Setter Property="Foreground" Value="Black"/>
+            <Setter Property="FontSize" Value="12"/>
+            <Setter Property="IsReadOnly" Value="True"></Setter>
+        </Style>
+        <Style TargetType="DataGridColumnHeader">
+            <Setter Property="IsHitTestVisible" Value="False"></Setter>
+            <Setter Property="Padding" Value="4"></Setter>
+            <Setter Property="Background" Value="DeepPink"/>
+            <Setter Property="Foreground" Value="White"/>
+            <Setter Property="Height" Value="25"></Setter>
+            <Setter Property="BorderBrush" Value="White"></Setter>
+            <Setter Property="BorderThickness" Value="1"></Setter>
+            <Setter Property="HorizontalAlignment" Value="Stretch"></Setter>
+        </Style>
+        <Style TargetType="ComboBox">
+            <Setter Property="Background" Value="DeepPink"/>
+            <Setter Property="Foreground" Value="Black"/>
+            <Setter Property="BorderBrush" Value="White"/>
+            <Setter Property="BorderThickness" Value="1"/>
+            <Setter Property="FontWeight" Value="DemiBold"/>
+           
         </Style>
     </Application.Resources>
 </Application>

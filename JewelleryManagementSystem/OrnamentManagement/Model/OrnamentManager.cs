@@ -5,6 +5,9 @@ using System.Linq;
 using System.Runtime.Serialization;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows.Documents;
+using JewelleryManagementSystem.CustomerManagement.Model;
+using System.Windows.Media.Media3D;
 using JewelleryManagementSystem.ModelUtilities;
 
 namespace JewelleryManagementSystem.OrnamentManagement.Model
@@ -15,7 +18,7 @@ namespace JewelleryManagementSystem.OrnamentManagement.Model
         private IMetal _metal;
         private string _name;
         private WeightType _makingChargeType;
-        private float _makingCharges;
+        private float? _makingCharges = null;
 
         [DataMember]
         public string Name
@@ -38,7 +41,6 @@ namespace JewelleryManagementSystem.OrnamentManagement.Model
                 if (value == null)
                     return;
                 _metal = value;
-                UpdatedRateAndMaking();
                 OnPropertyChanged(nameof(Metal));
             }
         }
@@ -55,7 +57,7 @@ namespace JewelleryManagementSystem.OrnamentManagement.Model
             }
         }
         [DataMember]
-        public float MakingCharges
+        public float? MakingCharges
         {
             get => _makingCharges;
             set
@@ -66,27 +68,45 @@ namespace JewelleryManagementSystem.OrnamentManagement.Model
                 OnPropertyChanged(nameof(MakingCharges));
             }
         }
-        private void UpdatedRateAndMaking()
+        public void UpdatedRateAndMaking()
         {
             MakingChargeType = Metal.WeightTypeForMaking;
             MakingCharges = Metal.MakingCharges;
         }
+        public Ornament Clone()
+        {
+            return new Ornament()
+            {
+                Name = this.Name,
+                Metal = this.Metal.Clone(),
+                MakingCharges = this.MakingCharges,
+                MakingChargeType = this.MakingChargeType,
+            };
+        }
         public override string ToString()
         {
-            return Metal.ToString() + " " + Name;
+            return Name + $" ({Metal.ToString()})";
+        }
+        public override bool Equals(object? obj)
+        {
+            if (ReferenceEquals(null, obj)) return false;
+            var ornamentObj = obj as Ornament;
+            if (ornamentObj == null) return false;
+            if (ornamentObj.ToString() == this.ToString() && ornamentObj.MakingCharges == MakingCharges) return true;
+            return false;
         }
     }
-    public sealed class OrnamentManager
+    public sealed class OrnamentManager : CommonComponent
     {
         private List<Ornament> _availableOrnaments;
-        private OrnamentManager _instance;
+        private static OrnamentManager _instance;
         private string _filePath = Path.Combine(DirectoryPath.OrnamentDirectory, "Ornaments.xml");
         private OrnamentManager()
         {
-            Load();
+            LoadDefaultOrnaments();
         }
         public List<Ornament> AvailableOrnaments => _availableOrnaments;
-        public OrnamentManager Instance
+        public static OrnamentManager Instance
         {
             get
             {
@@ -144,12 +164,46 @@ namespace JewelleryManagementSystem.OrnamentManagement.Model
         }
         private void Save()
         {
-            DataManager.Save<List<Ornament>>(AvailableOrnaments, _filePath);
+            try
+            {
+                DataManager.Save<List<Ornament>>(AvailableOrnaments, _filePath);
+            }
+            catch (Exception ex)
+            {
+                OnShowMessageBox?.Invoke($"Unable to save ornaments,{ex.Message}");
+            }
+        }
+        private void LoadDefaultOrnaments()
+        {
+            Load();
+            if (_availableOrnaments.Count == 0)
+            {
+                _availableOrnaments.Add(new Ornament { Name = "Gold Ring", Metal = MetalManager.Instance.AvailableMetals.Where(metal => metal.MetalName == "Gold 22 cr.").FirstOrDefault().Clone() });
+                _availableOrnaments.Add(new Ornament
+                {
+                    Name = "Gold Vedha",
+                    Metal = MetalManager.Instance.AvailableMetals.Where(metal => metal.MetalName == "Gold 24 cr.").FirstOrDefault().Clone(),
+                    MakingCharges = 0,
+                    MakingChargeType
+                 = WeightType.InGram
+                });
+                _availableOrnaments.Add(new Ornament { Name = "Silver Painjan", Metal = MetalManager.Instance.AvailableMetals.Where(metal => metal.MetalName.Trim() == "Silver").FirstOrDefault().Clone() });
+                Save();
+            }
         }
         private void Load()
         {
-            var list = DataManager.Read<List<Ornament>>(_filePath);
-            _availableOrnaments = list != null ? list : new List<Ornament>();
+            try
+            {
+                var list = DataManager.Read<List<Ornament>>(_filePath);
+                _availableOrnaments = list != null ? list : new List<Ornament>();
+            }
+            catch (Exception ex)
+            {
+                _availableOrnaments = new List<Ornament>();
+                OnShowMessageBox?.Invoke($"Unable to load ornaments,{ex.Message}");
+            }
         }
+
     }
 }

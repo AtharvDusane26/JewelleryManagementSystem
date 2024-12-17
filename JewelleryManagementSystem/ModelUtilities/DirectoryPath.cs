@@ -33,8 +33,8 @@ namespace JewelleryManagementSystem.ModelUtilities
         }
         public static string OrnamentDirectory
         {
-            get => _metalDirectory;
-            private set => _metalDirectory = value;
+            get => _ornamentDirecory;
+            private set => _ornamentDirecory = value;
         }
         public static string CustomerDirectory
         {

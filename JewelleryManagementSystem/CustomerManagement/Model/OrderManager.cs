@@ -1,6 +1,8 @@
 ﻿using JewelleryManagementSystem.ModelUtilities;
 using JewelleryManagementSystem.OrnamentManagement.Model;
 using System.Collections.ObjectModel;
+using System.Windows.Documents;
+using System.Xaml;
 
 namespace JewelleryManagementSystem.CustomerManagement.Model
 {
@@ -29,13 +31,30 @@ namespace JewelleryManagementSystem.CustomerManagement.Model
         {
             return _order = new Order(Customer);
         }
-        public void AddOrUpdateOrder(IOrder order)
+        public bool AddOrUpdateOrder()
         {
-            if (OrderList == null)
-                return;
-            if (OrderList.Any(o => o.OrderID == order.OrderID))
-                OrderList.Remove(OrderList.Where(o => o.OrderID == order.OrderID).FirstOrDefault());
-            OrderList.Add(order);
+            Order.OrderStatus = "pending";
+            if (OrderList == null || Order == null)
+                return false;
+            if (!ValidateOrder(Order))
+            {
+                Order.OrderStatus = "cancelled";
+                return false;
+            }
+            if (OrderList.Any(o => o.OrderID == Order.OrderID))
+                OrderList.Remove(OrderList.Where(o => o.OrderID == Order.OrderID).FirstOrDefault());
+            OrderList.Add(Order);
+            if(Customer is CommonComponent component)
+                component.OnAllPropertyChanged();
+            Order.IsCompleted = true;
+            return true;
+        }
+        private bool ValidateOrder(IOrder order)
+        {
+            if (order == null) return false;
+            if (order.PurchasedJewelleries == null || order.PurchasedJewelleries.Count == 0) return false;
+            return true;
+
         }
         public IOrder GetOrder(int id)
         {

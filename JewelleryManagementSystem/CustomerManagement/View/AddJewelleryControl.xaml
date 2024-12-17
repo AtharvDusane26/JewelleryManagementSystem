@@ -1,0 +1,41 @@
+﻿<UserControl x:Class="JewelleryManagementSystem.CustomerManagement.View.AddJewelleryControl"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:JewelleryManagementSystem.CustomerManagement.View"
+             mc:Ignorable="d" 
+             >
+    <Grid>
+        <GroupBox x:Name="grpJewellery" Header="Add Jewellery" BorderBrush="Purple" BorderThickness="1">
+            <Grid>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="auto"></RowDefinition>
+                    <RowDefinition Height="auto"></RowDefinition>
+                    <RowDefinition Height="auto"></RowDefinition>
+                    <RowDefinition Height="auto"></RowDefinition>
+                    <RowDefinition Height="auto"></RowDefinition>
+                </Grid.RowDefinitions>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width='auto'></ColumnDefinition>
+                    <ColumnDefinition></ColumnDefinition>
+                </Grid.ColumnDefinitions>
+                <Label Content="Ornament" Grid.Row="0" Grid.Column="0"></Label>
+                <ComboBox x:Name="cmbJewellery" Height="25" Width="160" Grid.Row="0" Grid.Column="1" ></ComboBox>
+                <TextBox x:Name="txtJewellery" Height="25" Width="160" Grid.Row="0" Grid.Column="1" IsReadOnly="True" Visibility="Collapsed"></TextBox>
+                <Label Content="Weight" Grid.Row="1" Grid.Column="0"></Label>
+                <StackPanel Grid.Row="1" Grid.Column="1" Orientation="Horizontal" HorizontalAlignment="Center">
+                    <TextBox x:Name="txtWeight" Height="25" Text="{Binding Weight}" Width="110" Grid.Row="1" Grid.Column="1"></TextBox>
+                    <Label Content="(In Gm.)" Grid.Row="1" Grid.Column="0"></Label>
+                </StackPanel>
+                <Label Content="Making Charges" Grid.Row="2" Grid.Column="0"></Label>
+                <Label x:Name="lblMaking" Content="{Binding MakingChargesPerGram , Mode=OneWay}" Grid.Row="2" Grid.Column="1"></Label>
+                <Label Content="Total Amount" Grid.Row="3" Grid.Column="0"></Label>
+                <TextBox x:Name="txtAmount" Height="25" Width="160"  Grid.Row="3" Grid.Column="1" Text="{Binding TotalAmount , Mode=OneWay}" IsReadOnly="True"></TextBox>
+
+                <Button x:Name="btnAddJewellery" Grid.Row="4" Grid.Column="0" Content="Add"></Button>
+                <Button x:Name="btnRemoveJewellery" Grid.Row="4" Grid.Column="1" Content="Remove" HorizontalAlignment="Left" Visibility="Collapsed"></Button>
+            </Grid>
+        </GroupBox>
+    </Grid>
+</UserControl>

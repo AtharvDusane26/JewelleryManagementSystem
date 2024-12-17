@@ -19,6 +19,7 @@ namespace JewelleryManagementSystem.OrnamentManagement.Model
         public WeightType WeightTypeForRate { get; set; }
         public WeightType WeightTypeForMaking { get; set; }
         public float MetalRate { get; set; }
+        IMetal Clone();
     }
     [DataContract]
     public class Metal : CommonComponent, IMetal
@@ -88,12 +89,23 @@ namespace JewelleryManagementSystem.OrnamentManagement.Model
                 OnPropertyChanged(nameof(WeightTypeForMaking));
             }
         }
+        public IMetal Clone()
+        {
+            return new Metal()
+            {
+                MetalName = this.MetalName,
+                MakingCharges = this.MakingCharges,
+                WeightTypeForRate = this.WeightTypeForRate,
+                MetalRate = this.MetalRate,
+                WeightTypeForMaking = this.WeightTypeForMaking
+            };
+        }
         public override string ToString()
         {
             return MetalName;
         }
     }
-    public sealed class MetalManager
+    public sealed class MetalManager : CommonComponent
     {
         private List<IMetal> _availableMetals;
         private string _filePath = Path.Combine(DirectoryPath.MetalDirectory, "Metals.xml");
@@ -101,7 +113,7 @@ namespace JewelleryManagementSystem.OrnamentManagement.Model
         private static MetalManager _instance;
         private MetalManager()
         {
-            GetAvailableMetals();
+            LoadDefaultMetals();
         }
         public static MetalManager Instance
         {
@@ -142,15 +154,42 @@ namespace JewelleryManagementSystem.OrnamentManagement.Model
         }
         private void SaveMetalList()
         {
-            if (_availableMetals != null)
-                DataManager.Save(_availableMetals, _filePath);
+            try
+            {
+                if (_availableMetals != null)
+                    DataManager.Save(_availableMetals, _filePath);
+            }
+            catch (Exception ex)
+            {
+                OnShowMessageBox?.Invoke($"Unable to save metals{ex.Message}");
+            }
+
+        }
+        private void LoadDefaultMetals()
+        {
+            GetAvailableMetals();
+            if(_availableMetals.Count == 0)
+            {
+                _availableMetals.Add(new Metal() { MetalName = "Gold 24 cr.", MetalRate = 7600, WeightTypeForRate = WeightType.InGram, MakingCharges = 1000, WeightTypeForMaking = WeightType.InGram });
+                _availableMetals.Add(new Metal() { MetalName = "Gold 22 cr.", MetalRate = 7400, WeightTypeForRate = WeightType.InGram, MakingCharges = 800, WeightTypeForMaking = WeightType.InGram });
+                _availableMetals.Add(new Metal() { MetalName = "Silver ", MetalRate = 90000, WeightTypeForRate = WeightType.InKiloGram, MakingCharges = 30, WeightTypeForMaking = WeightType.InGram });
+                SaveMetalList();    
+            }
         }
         private void GetAvailableMetals()
         {
-            var list = DataManager.Read<List<IMetal>>(_filePath);
-            if (list == null)
+            try
+            {
+                var list = DataManager.Read<List<IMetal>>(_filePath);
+                if (list == null)
+                    _availableMetals = new List<IMetal>();
+                _availableMetals = list;
+            }
+            catch (Exception ex)
+            {
                 _availableMetals = new List<IMetal>();
-            _availableMetals = list.ToList();
+                OnShowMessageBox?.Invoke($"Unable to load metals{ex.Message}");
+            }
         }
 
     }

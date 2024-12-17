@@ -18,7 +18,7 @@ namespace JewelleryManagementSystem.CustomerManagement.Model
         string CustomerEmail { get; }
         string CustomerPhoneNumber { get; }
         List<IOrder> OrderList { get; }
-
+        // void UpdateCustomer();
     }
     [DataContract]
     public class Customer : CommonComponent, ICustomer
@@ -114,5 +114,6 @@ namespace JewelleryManagementSystem.CustomerManagement.Model
             if (otherCustomer == null) return false;
             return this.CustomerID == otherCustomer.CustomerID;
         }
+
     }
 }

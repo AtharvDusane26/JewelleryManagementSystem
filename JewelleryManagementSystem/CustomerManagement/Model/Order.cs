@@ -2,6 +2,7 @@
 using JewelleryManagementSystem.OrnamentManagement.Model;
 using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Linq;
 using System.Runtime.Serialization;
 using System.Text;
@@ -12,17 +13,22 @@ namespace JewelleryManagementSystem.CustomerManagement.Model
     public interface IOrder
     {
         ICustomer Customer { get; }
-        bool IsCompleted { get; }
-        string OrderStatus { get; }
+        bool IsCompleted { get; set; }
+        string OrderStatus { get; set; }
         string OrderID { get; }
         string CustomerID { get; }
         float TotalAmount { get; }
         float PaidAmount { get; }
+        List<float> PaidAmountInstallments { get; }
         float RemainingAmount { get; }
+        float DiscountGiven { get; }
         List<IJewellery> PurchasedJewelleries { get; }
         DateTime OrderPlacedDate { get; }
         DateTime OrderToBeCompleteDate { get; }
         DateTime OrderCompletedDate { get; }
+        void AddJewellery(IJewellery jewellery);
+        void RemoveJewellery(IJewellery jewellery);
+        void UpdatePaidAmount();
 
     }
     [DataContract]
@@ -32,16 +38,20 @@ namespace JewelleryManagementSystem.CustomerManagement.Model
         private string _orderID;
         private string _orderStatus;
         private float _totalAmount;
-        private float _totalPaidAmount;
+        private List<float> _paidAmountInstallments;
         private List<IJewellery> _purchasedJewelleries;
-        private DateTime _orderPlacedDate;
-        private DateTime _orderToBeCompleteDate;
+        private DateTime _orderPlacedDate = DateTime.Now;
+        private DateTime _orderToBeCompleteDate = DateTime.Now;
         private DateTime _orderCompletedDate;
+        private float _paidAmount = 0;
+        private float _discountGiven = 0;
         public Order(ICustomer customer)
         {
             Customer = customer;
             _orderID = $"{Customer.OrderList.Count + 1:D2}";
             OrderStatus = "new";
+            _purchasedJewelleries = new List<IJewellery>();
+            _paidAmountInstallments = new List<float> { 0 };
         }
         [DataMember]
         public ICustomer Customer { get; private set; }
@@ -55,7 +65,26 @@ namespace JewelleryManagementSystem.CustomerManagement.Model
                     return;
                 _isCompleted = value;
                 OnPropertyChanged(nameof(IsCompleted));
-
+                if (IsCompleted)
+                {
+                    OrderStatus = "completed";
+                    OrderCompletedDate = DateTime.Now;
+                }
+                else
+                    OrderStatus = "pending";
+            }
+        }
+        [DataMember]
+        public float PaidAmount
+        {
+            get => _paidAmount;
+            set
+            {
+                if (_paidAmount == value) return;
+                _paidAmount = value;
+                OnPropertyChanged(nameof(PaidAmount));
+                if (RemainingAmount == 0)
+                    PaidAmount = PaidAmountInstallments.Sum();
             }
         }
         [DataMember]
@@ -81,32 +110,38 @@ namespace JewelleryManagementSystem.CustomerManagement.Model
                 OnPropertyChanged(nameof(OrderStatus));
             }
         }
-        [DataMember]
+        [IgnoreDataMember]
         public float TotalAmount
         {
-            get => _totalAmount;
-            set
+            get => GetTotalAmount();
+        }
+        [DataMember]
+        public List<float> PaidAmountInstallments
+        {
+            get => _paidAmountInstallments;
+            private set
             {
-                if (value == _totalAmount)
+                if (_paidAmountInstallments == value)
                     return;
-                _totalAmount = value;
-                OnPropertyChanged(nameof(TotalAmount));
+                _paidAmountInstallments = value;
+                OnPropertyChanged(nameof(PaidAmountInstallments));
             }
         }
         [DataMember]
-        public float PaidAmount
+        public float DiscountGiven
         {
-            get => _totalPaidAmount;
+            get => _discountGiven;
             set
             {
-                if (_totalPaidAmount == value)
-                    return;
-                _totalPaidAmount = value;
-                OnPropertyChanged(nameof(PaidAmount));
+                if (value == _discountGiven) return;
+                _discountGiven = value;
+                OnPropertyChanged(nameof(DiscountGiven));
+                OnPropertyChanged(nameof(TotalAmount));
+                OnPropertyChanged(nameof(RemainingAmount));
             }
         }
         [IgnoreDataMember]
-        public float RemainingAmount => TotalAmount - PaidAmount;
+        public float RemainingAmount => TotalAmount - PaidAmountInstallments.Sum() - DiscountGiven;
         [IgnoreDataMember]
         public string CustomerID => Customer.CustomerID;
 
@@ -121,6 +156,11 @@ namespace JewelleryManagementSystem.CustomerManagement.Model
                 OnPropertyChanged(nameof(PurchasedJewelleries));
             }
         }
+        [IgnoreDataMember]
+        public ObservableCollection<IJewellery> PurchasedJewelleriesObservable
+        {
+            get => new ObservableCollection<IJewellery>(PurchasedJewelleries);
+        }
         [DataMember]
         public DateTime OrderPlacedDate
         {
@@ -128,6 +168,7 @@ namespace JewelleryManagementSystem.CustomerManagement.Model
             set
             {
                 if (value == _orderPlacedDate) return;
+                if (value.Date < DateTime.Today) return;
                 _orderPlacedDate = value;
                 OnPropertyChanged(nameof(OrderPlacedDate));
             }
@@ -139,6 +180,8 @@ namespace JewelleryManagementSystem.CustomerManagement.Model
             set
             {
                 if (_orderToBeCompleteDate == value) return;
+                if (value.Date < DateTime.Today) return;
+                if (value.Date < OrderPlacedDate.Date) return;
                 _orderToBeCompleteDate = value;
                 OnPropertyChanged(nameof(OrderToBeCompleteDate));
             }
@@ -155,6 +198,40 @@ namespace JewelleryManagementSystem.CustomerManagement.Model
 
             }
         }
+        public void UpdatePaidAmount()
+        {
+            if (PaidAmount <= 0 || PaidAmount > RemainingAmount)
+                return;
+            else
+                PaidAmountInstallments.Add(PaidAmount);
+            OnPropertyChanged(nameof(PaidAmountInstallments));
+            OnPropertyChanged(nameof(RemainingAmount));
+            PaidAmount = 0;
+        }
+        public void AddJewellery(IJewellery jewellery)
+        {
+            PurchasedJewelleries.Add(jewellery);
+            OnPropertyChanged(nameof(PurchasedJewelleries));
+            OnPropertyChanged(nameof(PurchasedJewelleriesObservable));
+            OnPropertyChanged(nameof(TotalAmount));
+            OnPropertyChanged(nameof(RemainingAmount));
+
+        }
+        public void RemoveJewellery(IJewellery jewellery)
+        {
+            if (PurchasedJewelleries.Any(o => o.Ornament.Name == jewellery.Ornament.Name && o.Weight == jewellery.Weight && o.TotalAmount == o.TotalAmount))
+            {
+                if (IsCompleted)
+                    return;
+                var jewellertToRemove = PurchasedJewelleries.Where(o => o.Ornament.Name == jewellery.Ornament.Name && o.Weight == jewellery.Weight && o.TotalAmount == o.TotalAmount).FirstOrDefault();
+                PurchasedJewelleries.Remove(jewellertToRemove);
+                OnPropertyChanged(nameof(PurchasedJewelleries));
+                OnPropertyChanged(nameof(PurchasedJewelleriesObservable));
+                OnPropertyChanged(nameof(TotalAmount));
+                OnPropertyChanged(nameof(RemainingAmount));              
+            }
+        }
+        private float GetTotalAmount() => PurchasedJewelleries.Sum(o => o.TotalAmount);
         public override bool Equals(object? obj)
         {
             var otherOrder = obj as IOrder;
