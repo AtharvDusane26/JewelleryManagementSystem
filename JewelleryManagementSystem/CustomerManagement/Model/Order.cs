@@ -1,5 +1,6 @@
 ﻿using JewelleryManagementSystem.ModelUtilities;
 using JewelleryManagementSystem.OrnamentManagement.Model;
+using JewelleryManagementSystem.RecieptManager;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -22,6 +23,7 @@ namespace JewelleryManagementSystem.CustomerManagement.Model
         List<float> PaidAmountInstallments { get; }
         float RemainingAmount { get; }
         float DiscountGiven { get; }
+        IReciept Reciept { get; set; }
         List<IJewellery> PurchasedJewelleries { get; }
         DateTime OrderPlacedDate { get; }
         DateTime OrderToBeCompleteDate { get; }
@@ -38,6 +40,7 @@ namespace JewelleryManagementSystem.CustomerManagement.Model
         private string _orderID;
         private string _orderStatus;
         private float _totalAmount;
+        private IReciept reciept;
         private List<float> _paidAmountInstallments;
         private List<IJewellery> _purchasedJewelleries;
         private DateTime _orderPlacedDate = DateTime.Now;
@@ -45,9 +48,11 @@ namespace JewelleryManagementSystem.CustomerManagement.Model
         private DateTime _orderCompletedDate;
         private float _paidAmount = 0;
         private float _discountGiven = 0;
+        private string _customerId;
         public Order(ICustomer customer)
         {
             Customer = customer;
+            _customerId = customer.CustomerID;
             _orderID = $"{Customer.OrderList.Count + 1:D2}";
             OrderStatus = "new";
             _purchasedJewelleries = new List<IJewellery>();
@@ -55,6 +60,12 @@ namespace JewelleryManagementSystem.CustomerManagement.Model
         }
         [IgnoreDataMember]
         public ICustomer Customer { get; private set; }
+        [DataMember]
+        public IReciept Reciept
+        {
+            get => reciept;
+            set => reciept = value;
+        }
         [DataMember]
         public bool IsCompleted
         {
@@ -155,7 +166,7 @@ namespace JewelleryManagementSystem.CustomerManagement.Model
             }
         }
         [IgnoreDataMember]
-        public string CustomerID => Customer.CustomerID;
+        public string CustomerID => _customerId;
 
         [DataMember]
         public List<IJewellery> PurchasedJewelleries

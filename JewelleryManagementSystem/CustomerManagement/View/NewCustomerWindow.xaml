@@ -14,6 +14,7 @@
         </Grid.RowDefinitions>
         <StackPanel  Grid.Row="0" Orientation="Horizontal">
             <Button x:Name="btnCreateOrder" Content="Create Order" HorizontalAlignment="Left" VerticalAlignment="Top" Click="btnCreateOrder_Click"></Button>
+            <Button x:Name="btnCreateReciept" Content="Create Reciept" HorizontalAlignment="Left" VerticalAlignment="Top" Click="btnCreateReciept_Click"></Button>
             <Button x:Name="btnDeleteOrder" Content="Delete Order" HorizontalAlignment="Left" VerticalAlignment="Top" Click="btnDeleteOrder_Click"></Button>
             <Button x:Name="btnCreateCustomer" Content="Create Customer" HorizontalAlignment="Left" VerticalAlignment="Top" Click="btnCreateCustomer_Click"></Button>
         </StackPanel>

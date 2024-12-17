@@ -76,7 +76,7 @@ namespace JewelleryManagementSystem.CustomerManagement.Model
             if (String.IsNullOrWhiteSpace(Customer.CustomerName)) return false;
             return true;
         }
-        public ICustomer GetCustomer(int id)
+        public ICustomer GetCustomer(string id)
         {
             var customer = CustomerList.Where(o => o.CustomerID.Equals(id)).FirstOrDefault();
             return customer;
