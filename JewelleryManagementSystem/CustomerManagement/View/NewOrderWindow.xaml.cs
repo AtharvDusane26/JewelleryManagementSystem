@@ -102,6 +102,8 @@ namespace JewelleryManagementSystem.CustomerManagement.View
 
         private void Button_Click(object sender, RoutedEventArgs e)
         {
+            if (_orderManager.Order.PurchasedJewelleries.Count <= 0)
+                return;
             var result = MessageBox.Show("Do you want to confirm order?", ProductInformation.ProductName, MessageBoxButton.YesNo, MessageBoxImage.Question);
             if (result == MessageBoxResult.Yes)
             {
