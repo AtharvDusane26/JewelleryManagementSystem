@@ -51,12 +51,12 @@
             <Setter Property="FontWeight" Value="DemiBold"></Setter>
         </Style>
         <Style TargetType="DataGrid">
-            <Setter Property="Background" Value="Pink"/>
+            <Setter Property="Background" Value="Transparent"/>
             <Setter Property="GridLinesVisibility" Value="All"/>
             <Setter Property="HorizontalGridLinesBrush" Value="White"/>
             <Setter Property="VerticalGridLinesBrush" Value="White"/>
-            <Setter Property="RowBackground" Value="LightPink"/>
-            <Setter Property="AlternatingRowBackground" Value="LavenderBlush"/>
+            <Setter Property="RowBackground" Value="#f587c9"/>
+            <Setter Property="AlternatingRowBackground" Value="Pink"/>
             <Setter Property="Foreground" Value="Black"/>
             <Setter Property="FontSize" Value="12"/>
             <Setter Property="IsReadOnly" Value="True"></Setter>
