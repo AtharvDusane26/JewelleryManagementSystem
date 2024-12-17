@@ -25,6 +25,7 @@ namespace JewelleryManagementSystem
                 _customerList = new ObservableCollection<ICustomer>(CustomerManager.CustomerList);
             else
                 _customerList = new ObservableCollection<ICustomer>();
+            OnPropertyChanged(nameof(CustomerList));
         }
 
     }

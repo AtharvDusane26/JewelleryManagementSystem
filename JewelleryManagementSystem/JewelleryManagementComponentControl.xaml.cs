@@ -33,7 +33,24 @@ namespace JewelleryManagementSystem
         {
             var newCustomerWindow = new NewCustomerWindow(_component.CustomerManager);
             newCustomerWindow.Owner = Window.GetWindow(this);
+            newCustomerWindow.Closing += (o, e) => _component.Build();
             newCustomerWindow.ShowDialog();
+        }
+
+        private void DataGrid_MouseDoubleClick(object sender, MouseButtonEventArgs e)
+        {
+            if(sender is DataGrid grid)
+            {
+                if (grid.SelectedItem is ICustomer customer)
+                {
+                    _component.CustomerManager.Customer = customer;
+                    var newCustomerWindow = new NewCustomerWindow(_component.CustomerManager);
+                    newCustomerWindow.Owner = Window.GetWindow(this);
+                    newCustomerWindow.btnCreateCustomer.Content = "Update";
+                    newCustomerWindow.Closing += (o, e) => _component.Build();
+                    newCustomerWindow.ShowDialog();
+                }
+            }
         }
     }
 }

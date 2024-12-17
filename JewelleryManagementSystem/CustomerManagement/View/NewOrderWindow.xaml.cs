@@ -23,12 +23,15 @@ namespace JewelleryManagementSystem.CustomerManagement.View
     public partial class NewOrderWindow : Window
     {
         private OrderManager _orderManager;
+        private IOrder _order;
         private IJewellery _jewellery = null;
-        public NewOrderWindow(OrderManager orderManager, IOrder order = null)
+        public NewOrderWindow(OrderManager orderManager)
         {
             InitializeComponent();
+            Title = ProductInformation.ProductName;
             _orderManager = orderManager;
-            DataContext = order != null ? order : orderManager.Order;
+            _order = orderManager.Order != null ? orderManager.Order : orderManager.GetNewOrder();
+            DataContext = _order;
             Build();
         }
         private void Build()
@@ -121,11 +124,13 @@ namespace JewelleryManagementSystem.CustomerManagement.View
                 _jewellery = grid.SelectedItem as IJewellery;
                 if (_jewellery != null)
                 {
+                    if (_order.IsCompleted)
+                        return;
                     var window = new Window();
                     var content = new AddJewelleryControl(_jewellery, RemoveJewellery);
-                    content.btnRemoveJewellery.IsEnabled = !_orderManager.Order.IsCompleted;
                     window.Content = content;
                     window.Owner = this;
+                    window.Title = ProductInformation.ProductName;
                     window.ResizeMode = ResizeMode.NoResize;
                     window.MaxHeight = 200;
                     window.MaxWidth = 300;

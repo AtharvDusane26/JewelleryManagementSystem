@@ -7,6 +7,7 @@
         <Style TargetType="Window">
             <Setter Property="Background" Value="#f1d9fa"></Setter>
             <Setter Property="ResizeMode" Value="NoResize"></Setter>
+            <Setter Property="Title" Value="Prathamesh Jewellers"></Setter>
         </Style>
         <Style TargetType="GroupBox">
             <Setter Property="BorderBrush" Value="Purple"></Setter>

@@ -53,6 +53,11 @@ namespace JewelleryManagementSystem.ModelUtilities
                 var newDir = Path.Combine(GeneralSettings.Default.BaseDirectory, GeneralSettings.Default.OrnamentDirectory);
                 Directory.CreateDirectory(newDir);
             }
+            if (!String.IsNullOrWhiteSpace(CustomerDirectory) && !Directory.Exists(CustomerDirectory))
+            {
+                var newDir = Path.Combine(GeneralSettings.Default.BaseDirectory, GeneralSettings.Default.CustomerDirectory);
+                Directory.CreateDirectory(newDir);
+            }
         }
     }
 }

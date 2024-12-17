@@ -21,12 +21,15 @@ namespace JewelleryManagementSystem.CustomerManagement.View
     public partial class NewCustomerWindow : Window
     {
         private CustomerManager _customerManager;
+        private ICustomer _customer;
         public NewCustomerWindow(CustomerManager customerManager)
         {
             InitializeComponent();
+            Title = ProductInformation.ProductName;
             _customerManager = customerManager;
-            DataContext = _customerManager.GetNewCustomer();
-            _customerManager.OrderManager.Build(_customerManager.Customer);
+            _customer = customerManager.Customer != null ? customerManager.Customer : _customerManager.GetNewCustomer();
+            DataContext = _customer;
+            _customerManager.OrderManager.Build(_customer);
             UpdateDataGridVisibility();
         }
 
@@ -54,7 +57,8 @@ namespace JewelleryManagementSystem.CustomerManagement.View
                 IOrder order = grid.SelectedItem as IOrder;
                 if (order != null)
                 {
-                    var newOrderWindow = new NewOrderWindow(_customerManager.OrderManager, order);
+                    _customerManager.OrderManager.Order = order;
+                    var newOrderWindow = new NewOrderWindow(_customerManager.OrderManager);
                     newOrderWindow.Owner = this;
                     newOrderWindow.btnAddOrder.IsEnabled = !_customerManager.OrderManager.Order.IsCompleted;
                     newOrderWindow.btnAddOrder.Content = "Update";
@@ -62,6 +66,14 @@ namespace JewelleryManagementSystem.CustomerManagement.View
                     UpdateDataGridVisibility();
                 }
             }
+        }
+
+        private void btnCreateCustomer_Click(object sender, RoutedEventArgs e)
+        {
+            if(_customerManager.Customer == null) return;
+            var customer = _customerManager.Customer;
+            _customerManager.AddOrUpdateCustomer(out string message);
+            MessageBox.Show(message,ProductInformation.ProductName, MessageBoxButton.OK, MessageBoxImage.Information);
         }
     }
 }

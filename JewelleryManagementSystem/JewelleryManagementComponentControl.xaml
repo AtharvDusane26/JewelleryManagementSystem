@@ -14,11 +14,13 @@
         <StackPanel Orientation="Horizontal">
             <Button x:Name="_btnNewCustomer" Content="New Customer" Click="btnNewCustomer_Click"></Button>
         </StackPanel>
-        <DataGrid Grid.Row="1" Background="#f1d9fa" ItemsSource="{Binding CustomerList}" AutoGenerateColumns="False">
+        <DataGrid Grid.Row="1" Background="#f1d9fa" ItemsSource="{Binding CustomerList}" AutoGenerateColumns="False" MouseDoubleClick="DataGrid_MouseDoubleClick">
             <DataGrid.Columns>
                 <DataGridTextColumn Header="Customer Id" Binding="{Binding CustomerID}"></DataGridTextColumn>
                 <DataGridTextColumn Header="Customer Name" Binding="{Binding CustomerName}"></DataGridTextColumn>
-
+                <DataGridTextColumn Header="Mobile No." Binding="{Binding CustomerPhoneNumber}"></DataGridTextColumn>
+                <DataGridTextColumn Header="Email ID" Binding="{Binding CustomerEmail}"></DataGridTextColumn>
+                <DataGridTextColumn Header="Address" Binding="{Binding CustomerAddress}"></DataGridTextColumn>
             </DataGrid.Columns>
         </DataGrid>
     </Grid>

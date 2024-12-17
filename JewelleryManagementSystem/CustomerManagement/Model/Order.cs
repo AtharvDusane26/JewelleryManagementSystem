@@ -14,7 +14,7 @@ namespace JewelleryManagementSystem.CustomerManagement.Model
     {
         ICustomer Customer { get; }
         bool IsCompleted { get; set; }
-        string OrderStatus { get;}
+        string OrderStatus { get; }
         string OrderID { get; }
         string CustomerID { get; }
         float TotalAmount { get; }
@@ -53,7 +53,7 @@ namespace JewelleryManagementSystem.CustomerManagement.Model
             _purchasedJewelleries = new List<IJewellery>();
             _paidAmountInstallments = new List<float> { 0 };
         }
-        [DataMember]
+        [IgnoreDataMember]
         public ICustomer Customer { get; private set; }
         [DataMember]
         public bool IsCompleted
@@ -83,8 +83,10 @@ namespace JewelleryManagementSystem.CustomerManagement.Model
                 if (_paidAmount == value) return;
                 _paidAmount = value;
                 OnPropertyChanged(nameof(PaidAmount));
-                if (RemainingAmount == 0)
+                if (RemainingAmount == 0 && PaidAmountInstallments != null)
+                {
                     PaidAmount = PaidAmountInstallments.Sum();
+                }
             }
         }
         [DataMember]
@@ -141,7 +143,17 @@ namespace JewelleryManagementSystem.CustomerManagement.Model
             }
         }
         [IgnoreDataMember]
-        public float RemainingAmount => TotalAmount - PaidAmountInstallments.Sum() - DiscountGiven;
+        public float RemainingAmount
+        {
+            get
+            {
+                if (PaidAmountInstallments != null)
+                {
+                    return TotalAmount - PaidAmountInstallments.Sum() - DiscountGiven;
+                }
+                return 0;
+            }
+        }
         [IgnoreDataMember]
         public string CustomerID => Customer.CustomerID;
 
@@ -210,6 +222,7 @@ namespace JewelleryManagementSystem.CustomerManagement.Model
         }
         public void AddJewellery(IJewellery jewellery)
         {
+            OrderStatus = "pending";
             PurchasedJewelleries.Add(jewellery);
             OnPropertyChanged(nameof(PurchasedJewelleries));
             OnPropertyChanged(nameof(PurchasedJewelleriesObservable));
@@ -228,10 +241,17 @@ namespace JewelleryManagementSystem.CustomerManagement.Model
                 OnPropertyChanged(nameof(PurchasedJewelleries));
                 OnPropertyChanged(nameof(PurchasedJewelleriesObservable));
                 OnPropertyChanged(nameof(TotalAmount));
-                OnPropertyChanged(nameof(RemainingAmount));              
+                OnPropertyChanged(nameof(RemainingAmount));
             }
         }
-        private float GetTotalAmount() => PurchasedJewelleries.Sum(o => o.TotalAmount);
+        public float GetTotalAmount()
+        {
+            return PurchasedJewelleries != null ? PurchasedJewelleries.Sum(o => o.TotalAmount) : 0;
+        }
+        public override string ToString()
+        {
+            return this.OrderID.ToString();
+        }
         public override bool Equals(object? obj)
         {
             var otherOrder = obj as IOrder;

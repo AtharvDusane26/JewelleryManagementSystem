@@ -2,6 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -12,20 +13,22 @@ namespace JewelleryManagementSystem.CustomerManagement.Model
     {
         private ICustomer _customer;
         private OrderManager _orderManager;
+        private string _filePath = Path.Combine(DirectoryPath.CustomerDirectory, "Customer.xml");
         private List<ICustomer> _customerList;
-
         public OrderManager OrderManager => _orderManager;
         public List<ICustomer> CustomerList => _customerList;
         public ICustomer Customer
         {
             get => _customer;
+            set => _customer = value;
         }
         internal void Build()
         {
             var list = GetCustomers();
             if (list == null)
                 _customerList = new List<ICustomer>();
-            _customerList = list;
+            else
+                _customerList = list;
             _orderManager = new OrderManager();
         }
         public ICustomer GetNewCustomer()
@@ -42,18 +45,36 @@ namespace JewelleryManagementSystem.CustomerManagement.Model
             var counter = Convert.ToInt32(lastCusId.Substring(6));
             if (dateSplit != DateTime.Now.ToString("yyyyMM"))
                 counter = 1;
-            return $"{DateTime.Now.ToString("yyyyMM")}{counter:D4}";
+            return $"{DateTime.Now.ToString("yyyyMM")}{++counter:D4}";
 
         }
-        public void AddOrUpdateCustomer(ICustomer customer)
+        public void AddOrUpdateCustomer(out string errorMessage)
         {
+            errorMessage = string.Empty;
             if (CustomerList == null)
+            {
+                errorMessage = "Invalid Customer List";
                 return;
-            if (CustomerList.Any(o => o.CustomerID == customer.CustomerID))
-                CustomerList.Remove(CustomerList.Where(o => o.CustomerID == customer.CustomerID).FirstOrDefault());
-            CustomerList.Add(customer);
+            }
+            if (!ValidateCustomer())
+            {
+                errorMessage = "Invalid Customer Data";
+                return;
+            }
+            if (CustomerList.Any(o => o.CustomerID == Customer.CustomerID))
+                CustomerList.Remove(CustomerList.Where(o => o.CustomerID == Customer.CustomerID).FirstOrDefault());
+            CustomerList.Add(Customer);
             OnPropertyChanged(nameof(CustomerList));
-            DataManager.Save<List<ICustomer>>(CustomerList.ToList(), DirectoryPath.CustomerDirectory);
+            DataManager.Save<List<ICustomer>>(CustomerList.ToList(), _filePath);
+            errorMessage = "Updated Customer List";
+            GeneralSettings.Default.LastCustomerID = Customer.CustomerID;
+            GeneralSettings.Default.Save();
+        }
+        private bool ValidateCustomer()
+        {
+            if (Customer == null) return false;
+            if (String.IsNullOrWhiteSpace(Customer.CustomerName)) return false;
+            return true;
         }
         public ICustomer GetCustomer(int id)
         {
@@ -64,7 +85,7 @@ namespace JewelleryManagementSystem.CustomerManagement.Model
         {
             try
             {
-                var list = DataManager.Read<List<ICustomer>>(DirectoryPath.CustomerDirectory);
+                var list = DataManager.Read<List<ICustomer>>(_filePath); ;
                 return list;
             }
             catch (Exception ex)

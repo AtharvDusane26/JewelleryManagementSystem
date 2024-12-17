@@ -64,6 +64,9 @@
 
             </DataGrid.Columns>
         </DataGrid>
-        <Button x:Name="btnCreateOrder" Content="Create Order" Grid.Row="2" HorizontalAlignment="Left" VerticalAlignment="Top" Click="btnCreateOrder_Click"></Button>
+        <StackPanel  Grid.Row="2" Orientation="Horizontal">
+        <Button x:Name="btnCreateOrder" Content="Create Order" HorizontalAlignment="Left" VerticalAlignment="Top" Click="btnCreateOrder_Click"></Button>
+            <Button x:Name="btnCreateCustomer" Content="Create Customer" HorizontalAlignment="Left" VerticalAlignment="Top" Click="btnCreateCustomer_Click"></Button>
+        </StackPanel>
     </Grid>
 </Window>

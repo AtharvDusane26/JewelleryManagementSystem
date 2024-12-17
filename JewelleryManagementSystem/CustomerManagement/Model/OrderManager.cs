@@ -15,6 +15,7 @@ namespace JewelleryManagementSystem.CustomerManagement.Model
         public IOrder Order
         {
             get => _order;
+            set => _order = value;
         }
         public OrnamentManager OrnamentManager => OrnamentManager.Instance;
         public MetalManager MetalManager => MetalManager.Instance;
@@ -44,7 +45,6 @@ namespace JewelleryManagementSystem.CustomerManagement.Model
             OrderList.Add(Order);
             if(Customer is CommonComponent component)
                 component.OnAllPropertyChanged();
-            Order.IsCompleted = true;
             return true;
         }
         private bool ValidateOrder(IOrder order)
