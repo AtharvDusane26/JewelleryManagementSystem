@@ -61,12 +61,16 @@
                 <DataGridTextColumn Header="Discount Amount" Binding="{Binding DiscountGiven}"></DataGridTextColumn>
                 <DataGridTextColumn Header="Remaining Amount" Binding="{Binding RemainingAmount}"></DataGridTextColumn>
                 <DataGridTextColumn Header="Order Status" Binding="{Binding OrderStatus}"></DataGridTextColumn>
+                <DataGridTextColumn Header="Order Placed On" Binding="{Binding OrderPlacedDate , StringFormat='{}{0:MM/dd/yyyy}'}"></DataGridTextColumn>
+                <DataGridTextColumn Header="Order Complete On" Binding="{Binding OrderToBeCompleteDate,StringFormat='{}{0:MM/dd/yyyy}'}"></DataGridTextColumn>
 
             </DataGrid.Columns>
         </DataGrid>
         <StackPanel  Grid.Row="2" Orientation="Horizontal">
-        <Button x:Name="btnCreateOrder" Content="Create Order" HorizontalAlignment="Left" VerticalAlignment="Top" Click="btnCreateOrder_Click"></Button>
+            <Button x:Name="btnCreateOrder" Content="Create Order" HorizontalAlignment="Left" VerticalAlignment="Top" Click="btnCreateOrder_Click"></Button>
+            <Button x:Name="btnDeleteOrder" Content="Delete Order" HorizontalAlignment="Left" VerticalAlignment="Top" Click="btnDeleteOrder_Click"></Button>
             <Button x:Name="btnCreateCustomer" Content="Create Customer" HorizontalAlignment="Left" VerticalAlignment="Top" Click="btnCreateCustomer_Click"></Button>
+
         </StackPanel>
     </Grid>
 </Window>

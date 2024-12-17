@@ -1,4 +1,5 @@
 ﻿using JewelleryManagementSystem.CustomerManagement.Model;
+using JewelleryManagementSystem.ModelUtilities;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -57,6 +58,8 @@ namespace JewelleryManagementSystem.CustomerManagement.View
                 IOrder order = grid.SelectedItem as IOrder;
                 if (order != null)
                 {
+                    if (order.IsCompleted)
+                        return;
                     _customerManager.OrderManager.Order = order;
                     var newOrderWindow = new NewOrderWindow(_customerManager.OrderManager);
                     newOrderWindow.Owner = this;
@@ -70,10 +73,38 @@ namespace JewelleryManagementSystem.CustomerManagement.View
 
         private void btnCreateCustomer_Click(object sender, RoutedEventArgs e)
         {
-            if(_customerManager.Customer == null) return;
+            if (_customerManager.Customer == null) return;
             var customer = _customerManager.Customer;
             _customerManager.AddOrUpdateCustomer(out string message);
-            MessageBox.Show(message,ProductInformation.ProductName, MessageBoxButton.OK, MessageBoxImage.Information);
+            MessageBox.Show(message, ProductInformation.ProductName, MessageBoxButton.OK, MessageBoxImage.Information);
+        }
+
+        private void btnDeleteOrder_Click(object sender, RoutedEventArgs e)
+        {
+            var order = dataGridOrders.SelectedItem as IOrder;
+            if (order != null && !order.IsCompleted)
+            {
+                var result = MessageBox.Show("Are you sure,do you want to delete order ?", ProductInformation.ProductName, MessageBoxButton.YesNo, MessageBoxImage.Question);
+                if (result == MessageBoxResult.Yes)
+                {
+                    _customer.OrderList.Remove(order);
+                    MessageBox.Show("Order Deleted", ProductInformation.ProductName, MessageBoxButton.OK, MessageBoxImage.Information);
+                    if (_customer is CommonComponent component)
+                        component.OnAllPropertyChanged();
+                }
+
+            }
+            else
+            {
+                if (order == null)
+                {
+                    MessageBox.Show("Please select the order to be delete", ProductInformation.ProductName, MessageBoxButton.OK, MessageBoxImage.Information);
+                    return;
+                }
+                if (order.IsCompleted)
+                    MessageBox.Show("Completed order could not be delete", ProductInformation.ProductName, MessageBoxButton.OK, MessageBoxImage.Information);
+
+            }
         }
     }
 }

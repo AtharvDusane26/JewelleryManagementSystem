@@ -71,6 +71,9 @@
             <Setter Property="BorderThickness" Value="1"></Setter>
             <Setter Property="HorizontalAlignment" Value="Stretch"></Setter>
         </Style>
+        <Style TargetType="DataGridCell">
+            <Setter Property="Height" Value="25"></Setter>
+        </Style>
         <Style TargetType="ComboBox">
             <Setter Property="Background" Value="DeepPink"/>
             <Setter Property="Foreground" Value="Black"/>
