@@ -14,7 +14,7 @@ namespace JewelleryManagementSystem.CustomerManagement.Model
     {
         ICustomer Customer { get; }
         bool IsCompleted { get; set; }
-        string OrderStatus { get; set; }
+        string OrderStatus { get;}
         string OrderID { get; }
         string CustomerID { get; }
         float TotalAmount { get; }

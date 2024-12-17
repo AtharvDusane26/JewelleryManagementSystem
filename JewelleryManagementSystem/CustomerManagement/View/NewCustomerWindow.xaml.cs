@@ -56,6 +56,7 @@ namespace JewelleryManagementSystem.CustomerManagement.View
                 {
                     var newOrderWindow = new NewOrderWindow(_customerManager.OrderManager, order);
                     newOrderWindow.Owner = this;
+                    newOrderWindow.btnAddOrder.IsEnabled = !_customerManager.OrderManager.Order.IsCompleted;
                     newOrderWindow.btnAddOrder.Content = "Update";
                     newOrderWindow.ShowDialog();
                     UpdateDataGridVisibility();

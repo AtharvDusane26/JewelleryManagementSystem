@@ -33,12 +33,10 @@ namespace JewelleryManagementSystem.CustomerManagement.Model
         }
         public bool AddOrUpdateOrder()
         {
-            Order.OrderStatus = "pending";
             if (OrderList == null || Order == null)
                 return false;
             if (!ValidateOrder(Order))
             {
-                Order.OrderStatus = "cancelled";
                 return false;
             }
             if (OrderList.Any(o => o.OrderID == Order.OrderID))
