@@ -1,10 +1,13 @@
 ﻿using JewelleryManagementSystem.CustomerManagement.Model;
 using JewelleryManagementSystem.ModelUtilities;
 using JewelleryManagementSystem.RecieptManager;
+using JewelleryManagementSystem.RecieptManager.View;
 using System;
 using System.Collections.Generic;
+using System.Drawing.Printing;
 using System.IO;
 using System.Linq;
+using System.Printing;
 using System.Security.Cryptography;
 using System.Text;
 using System.Threading.Tasks;
@@ -16,6 +19,7 @@ using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
+using System.Windows.Xps.Packaging;
 
 namespace JewelleryManagementSystem.CustomerManagement.View
 {
@@ -115,80 +119,24 @@ namespace JewelleryManagementSystem.CustomerManagement.View
             var order = dataGridOrders.SelectedItem as IOrder;
             if (order != null)
             {
-                if (order.Reciept == null)
+                var reciept = new Reciept(_customer.CustomerName, order.OrderID, _customer.CustomerID)
                 {
-                    var reciept = new Reciept(_customer.CustomerName, order.OrderID, _customer.CustomerID)
-                    {
-                        PurchasedJewelleries = order.PurchasedJewelleries,
-                        TotalAmount = order.TotalAmount,
-                        RemainingAmount = order.RemainingAmount,
-                        DiscountGiven = order.DiscountGiven,
-                        OrderStatus = order.OrderStatus,
-                    };
-                    order.Reciept = reciept;
-                }
-                else
-                {
-                    var result = MessageBox.Show("Reciept already present,you want to create it again?", ProductInformation.ProductName, MessageBoxButton.YesNo, MessageBoxImage.Question);
-                    if(result == MessageBoxResult.Yes)
-                    {
-                        var reciept = new Reciept(_customer.CustomerName, order.OrderID, _customer.CustomerID)
-                        {
-                            PurchasedJewelleries = order.PurchasedJewelleries,
-                            TotalAmount = order.TotalAmount,
-                            RemainingAmount = order.RemainingAmount,
-                            DiscountGiven = order.DiscountGiven,
-                            OrderStatus = order.OrderStatus,
-                        };
-                        order.Reciept = reciept;
-                    }
-                }
-                var window = new Window();
-                var grid = new Grid();
-                Grid dynamicGrid = new Grid
-                {
-                    Margin = new Thickness(5) 
+                    PurchasedJewelleries = order.PurchasedJewelleries,
+                    TotalAmount = order.TotalAmount,
+                    RemainingAmount = order.RemainingAmount,
+                    DiscountGiven = order.DiscountGiven,
+                    OrderStatus = order.OrderStatus,
                 };
-                RowDefinition row1 = new RowDefinition();
-                RowDefinition row2 = new RowDefinition();
-                row1.Height = GridLength.Auto;
-                dynamicGrid.RowDefinitions.Add(row1);
-                dynamicGrid.RowDefinitions.Add(row2);
-
-                Button button = new Button
-                {
-                    Content = "Print",                  
-                    HorizontalAlignment = HorizontalAlignment.Right,
-                };
-
-                Grid.SetRow(button, 0); 
-                dynamicGrid.Children.Add(button);
-                var printGrid = new Grid();
-                Grid.SetRow(printGrid, 1);
-                var control = new WebBrowser();
-                printGrid.Children.Add(control);
-
-                dynamicGrid.Children.Add(printGrid);
-
-                window.Content = dynamicGrid;
-                button.Click += (o, e) =>
-                {
-                    GetScreenShot(control, order);
-                };
+                var window = new RecieptWindow(reciept);
+                window.Title = ProductInformation.ProductName;
                 window.Owner = this;
-                window.ResizeMode = ResizeMode.NoResize;
-                window.WindowStartupLocation = WindowStartupLocation.CenterOwner;
-                
-                control.NavigateToString(RecieptGenerator.CreateReciept(order.Reciept));
-                window.ShowDialog();
-             
+                window.ShowInTaskbar = false;
+                window.ResizeMode = ResizeMode.CanMinimize;
+                window.WindowStartupLocation = WindowStartupLocation.CenterScreen;
+                window.Show();
             }
             else
                 MessageBox.Show("Please select the order to be create reciept", ProductInformation.ProductName, MessageBoxButton.OK, MessageBoxImage.Information);
         }
-        private void GetScreenShot(WebBrowser webBrowser, IOrder order)
-        {
-          
-        }   
     }
 }

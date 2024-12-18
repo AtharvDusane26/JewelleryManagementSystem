@@ -23,7 +23,6 @@ namespace JewelleryManagementSystem.CustomerManagement.Model
         List<float> PaidAmountInstallments { get; }
         float RemainingAmount { get; }
         float DiscountGiven { get; }
-        IReciept Reciept { get; set; }
         List<IJewellery> PurchasedJewelleries { get; }
         DateTime OrderPlacedDate { get; }
         DateTime OrderToBeCompleteDate { get; }
@@ -40,7 +39,6 @@ namespace JewelleryManagementSystem.CustomerManagement.Model
         private string _orderID;
         private string _orderStatus;
         private float _totalAmount;
-        private IReciept reciept;
         private List<float> _paidAmountInstallments;
         private List<IJewellery> _purchasedJewelleries;
         private DateTime _orderPlacedDate = DateTime.Now;
@@ -59,13 +57,7 @@ namespace JewelleryManagementSystem.CustomerManagement.Model
             _paidAmountInstallments = new List<float> { 0 };
         }
         [IgnoreDataMember]
-        public ICustomer Customer { get; private set; }
-        [DataMember]
-        public IReciept Reciept
-        {
-            get => reciept;
-            set => reciept = value;
-        }
+        public ICustomer Customer { get; private set; }       
         [DataMember]
         public bool IsCompleted
         {

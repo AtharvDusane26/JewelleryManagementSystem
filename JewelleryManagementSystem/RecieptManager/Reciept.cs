@@ -92,10 +92,10 @@ namespace JewelleryManagementSystem.RecieptManager
             html.AppendLine("<html>");
             html.AppendLine("<head>");
             html.AppendLine("<style>");
-            html.AppendLine("@page { size: A4; margin: 20mm; }"); // Sets the page size to A4 with margins
+          //  html.AppendLine("@page { size: A4; margin: 20mm; }"); // Sets the page size to A4 with margins
             html.AppendLine("body { font-family: Arial, sans-serif; margin: 0; padding: 0; }");
             html.AppendLine(".receipt { width: 100%; box-sizing: border-box; margin: auto; border: 2px solid darkorange; padding: 20px; }");
-            html.AppendLine(".header { text-align: center; font-size: 28px; font-weight: bold; margin-bottom: 10px; background-color: darkorange; color: white; padding: 10px; }");
+            html.AppendLine(".header { text-align: center; font-size: 30px; font-weight: bold; margin-bottom: 10px;  color: darkorange; padding: 10px; }");
             html.AppendLine(".details, .summary { margin: 20px 0; }");
             html.AppendLine("table { width: 100%; border-collapse: collapse; margin-bottom: 20px; }");
             html.AppendLine("th, td { border: 1px solid orange; padding: 8px; text-align: left; }");
@@ -115,8 +115,8 @@ namespace JewelleryManagementSystem.RecieptManager
 
             // Header Section
             html.AppendLine($"<div class='header'>{ProductInformation.ProductName}</div>");
-            html.AppendLine($"<div>Shop Address<br>{ProductInformation.Address}<br>{ProductInformation.PhoneNumber}</div>");
-            html.AppendLine($"<div style='text-align:right; margin-top:10px;'>DATE: {DateTime.Now.ToShortDateString()}<br>RECEIPT NO.: {receipt.ReceiptID}</div>");
+            html.AppendLine($"<div font-size: 12px; >Shop Address<br>{ProductInformation.Address}<br>{ProductInformation.PhoneNumber}</div>");
+            html.AppendLine($"<div style='text-align:right;  font-size: 14px; margin-top:10px;'>DATE: {DateTime.Now.ToShortDateString()}<br>RECEIPT NO.: {receipt.ReceiptID}</div>");
 
             // Bill To and Ship To
             html.AppendLine("<div class='details'>");
@@ -153,8 +153,7 @@ namespace JewelleryManagementSystem.RecieptManager
             html.AppendLine("</div>");
 
             // Footer and Notes
-            html.AppendLine($"<div>{ProductInformation.OwenrSignature}</div>");
-            html.AppendLine($"<div style='text-align:left; font-size: 12px;'>(This is an auto-generated signature)</div>");
+            html.AppendLine($"<div text-align:right;>{ProductInformation.OwenrSignature}<br><div style='text-align:left; font-size: 12px;'>(This is an auto-generated signature)</div></div>");
             html.AppendLine("<div class='footer'>THANK YOU FOR YOUR VISIT..!</div>");
 
             // Closing tags
