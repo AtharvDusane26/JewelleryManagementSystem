@@ -1,5 +1,6 @@
 ﻿using JewelleryManagementSystem.CustomerManagement.Model;
 using JewelleryManagementSystem.CustomerManagement.View;
+using JewelleryManagementSystem.Settings.View;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -51,6 +52,14 @@ namespace JewelleryManagementSystem
                     newCustomerWindow.ShowDialog();
                 }
             }
+        }
+
+        private void _btnSettings_Click(object sender, RoutedEventArgs e)
+        {
+            var settingsWindow = new SettingsWindow();
+            settingsWindow.Owner = Window.GetWindow(this);
+            settingsWindow.Show();
+
         }
     }
 }

@@ -1,9 +1,5 @@
 ﻿using JewelleryManagementSystem.ModelUtilities;
-using JewelleryManagementSystem.OrnamentManagement.Model;
-using System.Collections.ObjectModel;
-using System.Windows.Documents;
-using System.Xaml;
-
+using JewelleryManagementSystem.Settings.Model;
 namespace JewelleryManagementSystem.CustomerManagement.Model
 {
     public class OrderManager : CommonComponent

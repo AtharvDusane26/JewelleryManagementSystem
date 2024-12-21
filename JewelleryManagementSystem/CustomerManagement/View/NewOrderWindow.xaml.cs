@@ -28,7 +28,7 @@ namespace JewelleryManagementSystem.CustomerManagement.View
         public NewOrderWindow(OrderManager orderManager)
         {
             InitializeComponent();
-            Title = ProductInformation.ProductName;
+            Title = ProductInformation.ShopName;
             _orderManager = orderManager;
             _order = orderManager.Order != null ? orderManager.Order : orderManager.GetNewOrder();
             DataContext = _order;
@@ -65,7 +65,7 @@ namespace JewelleryManagementSystem.CustomerManagement.View
             {
                 if (_jewellery.Weight <= 0 || _jewellery.TotalAmount <= 0)
                 { return; }
-                var result = MessageBox.Show("Do you want to confirm", ProductInformation.ProductName, MessageBoxButton.YesNo, MessageBoxImage.Question);
+                var result = MessageBox.Show("Do you want to confirm", ProductInformation.ShopName, MessageBoxButton.YesNo, MessageBoxImage.Question);
                 if (result == MessageBoxResult.Yes)
                     _orderManager.Order.AddJewellery(_jewellery);
                 ResetUI();
@@ -107,13 +107,13 @@ namespace JewelleryManagementSystem.CustomerManagement.View
         {
             if (_orderManager.Order.PurchasedJewelleries.Count <= 0)
                 return;
-            var result = MessageBox.Show("Do you want to confirm order?", ProductInformation.ProductName, MessageBoxButton.YesNo, MessageBoxImage.Question);
+            var result = MessageBox.Show("Do you want to confirm order?", ProductInformation.ShopName, MessageBoxButton.YesNo, MessageBoxImage.Question);
             if (result == MessageBoxResult.Yes)
             {
                 if (_orderManager.AddOrUpdateOrder())
-                    MessageBox.Show("Order Confirmed", ProductInformation.ProductName, MessageBoxButton.OK, MessageBoxImage.Information);
+                    MessageBox.Show("Order Confirmed", ProductInformation.ShopName, MessageBoxButton.OK, MessageBoxImage.Information);
                 else
-                    MessageBox.Show("Order Cancelled", ProductInformation.ProductName, MessageBoxButton.OK, MessageBoxImage.Information);
+                    MessageBox.Show("Order Cancelled", ProductInformation.ShopName, MessageBoxButton.OK, MessageBoxImage.Information);
             }
         }
 
@@ -130,7 +130,7 @@ namespace JewelleryManagementSystem.CustomerManagement.View
                     var content = new AddJewelleryControl(_jewellery, RemoveJewellery);
                     window.Content = content;
                     window.Owner = this;
-                    window.Title = ProductInformation.ProductName;
+                    window.Title = ProductInformation.ShopName;
                     window.ResizeMode = ResizeMode.NoResize;
                     window.MaxHeight = 200;
                     window.MaxWidth = 300;

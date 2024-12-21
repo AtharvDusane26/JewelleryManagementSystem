@@ -114,7 +114,7 @@ namespace JewelleryManagementSystem.RecieptManager
             html.AppendLine("<div class='receipt'>");
 
             // Header Section
-            html.AppendLine($"<div class='header'>{ProductInformation.ProductName}</div>");
+            html.AppendLine($"<div class='header'>{ProductInformation.ShopName}</div>");
             html.AppendLine($"<div font-size: 12px; >Shop Address<br>{ProductInformation.Address}<br>{ProductInformation.PhoneNumber}</div>");
             html.AppendLine($"<div style='text-align:right;  font-size: 14px; margin-top:10px;'>DATE: {DateTime.Now.ToShortDateString()}<br>RECEIPT NO.: {receipt.ReceiptID}</div>");
 
