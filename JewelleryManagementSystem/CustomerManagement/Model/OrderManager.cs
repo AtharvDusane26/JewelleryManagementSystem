@@ -15,13 +15,12 @@ namespace JewelleryManagementSystem.CustomerManagement.Model
         }
         public OrnamentManager OrnamentManager => OrnamentManager.Instance;
         public MetalManager MetalManager => MetalManager.Instance;
-        public ICustomer Customer { get; private set; }
+        public IOrderCustomer Customer { get; private set; }
         public void Build(ICustomer customer)
         {
             if (customer == null)
                 return;
-            Customer = customer;
-            _orders = customer.OrderList;
+            Customer = customer as IOrderCustomer;
             _orders = Customer.OrderList;
         }
         public IOrder GetNewOrder()

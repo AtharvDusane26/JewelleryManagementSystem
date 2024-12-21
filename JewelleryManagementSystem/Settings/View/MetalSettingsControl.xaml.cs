@@ -1,4 +1,5 @@
-﻿using System;
+﻿using JewelleryManagementSystem.Settings.Model;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -20,9 +21,15 @@ namespace JewelleryManagementSystem.Settings.View
     /// </summary>
     public partial class MetalSettingsControl : UserControl
     {
+        private MetalManager _instance;
         public MetalSettingsControl()
         {
             InitializeComponent();
+            Loaded += OnLoaded;
+        }
+        private void OnLoaded(object sender, RoutedEventArgs e)
+        {
+            _instance = MetalManager.Instance;
         }
     }
 }

@@ -29,32 +29,27 @@ namespace JewelleryManagementSystem.Settings.Model
             }
         }
         public List<IMetal> AvailableMetals => _availableMetals;
-        public bool AddOrUpdateMetal(string metalName, WeightType weightType, float metalRate, WeightType weightTypeForMaking, float makingCharges)
+        public bool AddOrUpdateMetal(IMetal metal)
         {
-            IMetal metal = null;
-            if (string.IsNullOrWhiteSpace(metalName))
+            if (_availableMetals == null)
                 return false;
-            if (_availableMetals != null && _availableMetals.Any(o => o.MetalName.ToLower().Trim() == metalName.ToLower().Trim()))
+            if (_availableMetals.Any(o => o.MetalName.ToLower().Trim() == metal.MetalName.ToLower().Trim()))
             {
-                metal = _availableMetals.FirstOrDefault(o => o.MetalName.ToLower().Trim() == metalName.ToLower().Trim());
-                metal.MetalName = metalName;
-                metal.MetalRate = metalRate;
-                metal.MakingCharges = makingCharges;
-                metal.WeightTypeForRate = weightType;
-                metal.WeightTypeForMaking = weightTypeForMaking;
+                metal = _availableMetals.FirstOrDefault(o => o.MetalName.ToLower().Trim() == metal.MetalName.ToLower().Trim());
+                metal.MetalName = metal.MetalName;
+                metal.MetalRate = metal.MetalRate;
+                metal.MakingCharges = metal.MakingCharges;
+                metal.WeightTypeForRate = metal.WeightTypeForRate;
+                metal.WeightTypeForMaking = metal.WeightTypeForMaking;
             }
             else
-            {
-                metal = new Metal();
-                metal.MetalName = metalName;
-                metal.MetalRate = metalRate;
-                metal.MakingCharges = makingCharges;
-                metal.WeightTypeForRate = weightType;
-                metal.WeightTypeForMaking = weightTypeForMaking;
                 _availableMetals.Add(metal);
-            }
             SaveMetalList();
             return true;
+        }
+        public IMetal GetNewMetal()
+        {
+            return new Metal();
         }
         private void SaveMetalList()
         {

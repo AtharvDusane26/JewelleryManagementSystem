@@ -13,7 +13,7 @@ namespace JewelleryManagementSystem.CustomerManagement.Model
 {
     public interface IOrder
     {
-        ICustomer Customer { get; }
+        IOrderCustomer Customer { get; }
         bool IsCompleted { get; set; }
         string OrderStatus { get; }
         string OrderID { get; }
@@ -49,7 +49,7 @@ namespace JewelleryManagementSystem.CustomerManagement.Model
         private string _customerId;
         public Order(ICustomer customer)
         {
-            Customer = customer;
+            Customer = customer as IOrderCustomer;
             _customerId = customer.CustomerID;
             _orderID = $"{Customer.OrderList.Count + 1:D2}";
             OrderStatus = "new";
@@ -57,7 +57,7 @@ namespace JewelleryManagementSystem.CustomerManagement.Model
             _paidAmountInstallments = new List<float> { 0 };
         }
         [IgnoreDataMember]
-        public ICustomer Customer { get; private set; }       
+        public IOrderCustomer Customer { get; private set; }       
         [DataMember]
         public bool IsCompleted
         {

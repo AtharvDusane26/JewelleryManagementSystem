@@ -17,11 +17,14 @@ namespace JewelleryManagementSystem.CustomerManagement.Model
         string CustomerAddress { get; }
         string CustomerEmail { get; }
         string CustomerPhoneNumber { get; }
-        List<IOrder> OrderList { get; }
         // void UpdateCustomer();
     }
+    public interface IOrderCustomer : ICustomer
+    {
+        List<IOrder> OrderList { get; }
+    }
     [DataContract]
-    public class Customer : CommonComponent, ICustomer
+    public class Customer : CommonComponent, IOrderCustomer
     {
         private string _customerID;
         private string _customerName;

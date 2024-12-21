@@ -51,10 +51,13 @@ namespace JewelleryManagementSystem.CustomerManagement.View
         }
         private void UpdateDataGridVisibility()
         {
-            if (_customerManager.Customer.OrderList != null && _customerManager.Customer.OrderList.Count > 0)
-                dataGridOrders.Visibility = Visibility.Visible;
-            else
-                dataGridOrders.Visibility = Visibility.Collapsed;
+            if (_customerManager.Customer is IOrderCustomer orderCustomer)
+            {
+                if (orderCustomer.OrderList != null && orderCustomer.OrderList.Count > 0)
+                    dataGridOrders.Visibility = Visibility.Visible;
+                else
+                    dataGridOrders.Visibility = Visibility.Collapsed;
+            }
 
         }
 
@@ -94,10 +97,13 @@ namespace JewelleryManagementSystem.CustomerManagement.View
                 var result = MessageBox.Show("Are you sure,do you want to delete order ?", ProductInformation.ShopName, MessageBoxButton.YesNo, MessageBoxImage.Question);
                 if (result == MessageBoxResult.Yes)
                 {
-                    _customer.OrderList.Remove(order);
-                    MessageBox.Show("Order Deleted", ProductInformation.ShopName, MessageBoxButton.OK, MessageBoxImage.Information);
-                    if (_customer is CommonComponent component)
-                        component.OnAllPropertyChanged();
+                    if (_customer is IOrderCustomer orderCustomer)
+                    {
+                        orderCustomer.OrderList.Remove(order);
+                        MessageBox.Show("Order Deleted", ProductInformation.ShopName, MessageBoxButton.OK, MessageBoxImage.Information);
+                        if (_customer is CommonComponent component)
+                            component.OnAllPropertyChanged();
+                    }
                 }
 
             }
