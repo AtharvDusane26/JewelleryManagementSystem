@@ -42,6 +42,8 @@ namespace JewelleryManagementSystem.Settings.View
             if(sender is ComboBox cmbMetalList)
             {
                 var selectedMetal = cmbMetalList.SelectedItem as IMetal;
+                if (selectedMetal == null)
+                    return;
                 var metal = _instance.AvailableMetals.Where(o => o.MetalID == selectedMetal.MetalID). FirstOrDefault();
                 if(metal != null)
                     DataContext = _metal = metal.Clone();

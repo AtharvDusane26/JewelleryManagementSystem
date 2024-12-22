@@ -69,6 +69,7 @@ namespace JewelleryManagementSystem.Settings.View
 
         private void btnClear_Click(object sender, RoutedEventArgs e)
         {
+            cmbOrnamentList.SelectedIndex = -1;
             DataContext = _ornament = _instance.GetNewOrnament();
         }
     }
