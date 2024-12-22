@@ -1,6 +1,7 @@
 ﻿using JewelleryManagementSystem.CustomerManagement.Model;
 using JewelleryManagementSystem.ModelUtilities;
 using JewelleryManagementSystem.OrnamentManagement.Model;
+using JewelleryManagementSystem.Settings.Model;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -25,14 +26,21 @@ namespace JewelleryManagementSystem.CustomerManagement.View
         private OrderManager _orderManager;
         private IOrder _order;
         private IJewellery _jewellery = null;
-        public NewOrderWindow(OrderManager orderManager)
+        private Action UpdateCustomer;
+        public NewOrderWindow(OrderManager orderManager, Action updateCustomer)
         {
             InitializeComponent();
             Title = ProductInformation.ShopName;
             _orderManager = orderManager;
             _order = orderManager.Order != null ? orderManager.Order : orderManager.GetNewOrder();
             DataContext = _order;
+            UpdateCustomer = updateCustomer;
             Build();
+            Closing += (o, e) =>
+            {
+                if(_order != null && _order.IsCompleted)
+                    _order.UpdateStock();
+            };
         }
         private void Build()
         {
@@ -48,6 +56,12 @@ namespace JewelleryManagementSystem.CustomerManagement.View
                 var selectedOrnament = comboBox.SelectedItem as Ornament;
                 if ((selectedOrnament != null))
                 {
+                    if (StockManager.Instance.CheckStockAvailability(selectedOrnament) == 0)
+                    {
+                        MessageBox.Show($"{selectedOrnament.Name} is out of stock", ProductInformation.ProductName, MessageBoxButton.OK, MessageBoxImage.Error);
+                        jewelleryControl.cmbJewellery.SelectedIndex = -1;
+                        return;
+                    }
                     _jewellery = new Jewellery();
                     _jewellery.Ornament = selectedOrnament.Clone();
                     jewelleryControl.DataContext = _jewellery;
@@ -109,7 +123,10 @@ namespace JewelleryManagementSystem.CustomerManagement.View
             if (result == MessageBoxResult.Yes)
             {
                 if (_orderManager.AddOrUpdateOrder())
+                {                 
                     MessageBox.Show("Order Confirmed", ProductInformation.ShopName, MessageBoxButton.OK, MessageBoxImage.Information);
+                    UpdateCustomer?.Invoke();
+                }
                 else
                     MessageBox.Show("Order Cancelled", ProductInformation.ShopName, MessageBoxButton.OK, MessageBoxImage.Information);
             }

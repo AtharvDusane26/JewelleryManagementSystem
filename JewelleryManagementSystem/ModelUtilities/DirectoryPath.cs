@@ -13,6 +13,7 @@ namespace JewelleryManagementSystem.ModelUtilities
         private static string _metalDirectory = Path.Combine(GeneralSettings.Default.BaseDirectory, GeneralSettings.Default.MetalDirectory);
         private static string _ornamentDirecory = Path.Combine(GeneralSettings.Default.BaseDirectory, GeneralSettings.Default.OrnamentDirectory);
         private static string _customerDirectory = Path.Combine(GeneralSettings.Default.BaseDirectory,GeneralSettings.Default.CustomerDirectory);
+        private static string _stockDirectory = Path.Combine(GeneralSettings.Default.BaseDirectory, GeneralSettings.Default.StockDirectory);
         private DirectoryPath()
         {
             CreateDirectoryPath();
@@ -41,6 +42,11 @@ namespace JewelleryManagementSystem.ModelUtilities
             get => _customerDirectory;
             private set => _customerDirectory = value;
         }
+        public static string StockDirectory
+        {
+            get => _stockDirectory;
+            private set => _stockDirectory = value;
+        }
         private static void CreateDirectoryPath()
         {
             if (!String.IsNullOrWhiteSpace(MetalDirectory) && !Directory.Exists(MetalDirectory))
@@ -56,6 +62,11 @@ namespace JewelleryManagementSystem.ModelUtilities
             if (!String.IsNullOrWhiteSpace(CustomerDirectory) && !Directory.Exists(CustomerDirectory))
             {
                 var newDir = Path.Combine(GeneralSettings.Default.BaseDirectory, GeneralSettings.Default.CustomerDirectory);
+                Directory.CreateDirectory(newDir);
+            }
+            if(!String.IsNullOrWhiteSpace(StockDirectory) && !Directory.Exists(StockDirectory))
+            {
+                var newDir = Path.Combine(GeneralSettings.Default.BaseDirectory, GeneralSettings.Default.StockDirectory);
                 Directory.CreateDirectory(newDir);
             }
         }

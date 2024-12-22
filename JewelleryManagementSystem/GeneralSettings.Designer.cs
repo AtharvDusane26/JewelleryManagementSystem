@@ -12,7 +12,7 @@ namespace JewelleryManagementSystem {
     
     
     [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
-    [global::System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.VisualStudio.Editors.SettingsDesigner.SettingsSingleFileGenerator", "17.11.0.0")]
+    [global::System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.VisualStudio.Editors.SettingsDesigner.SettingsSingleFileGenerator", "17.12.0.0")]
     internal sealed partial class GeneralSettings : global::System.Configuration.ApplicationSettingsBase {
         
         private static GeneralSettings defaultInstance = ((GeneralSettings)(global::System.Configuration.ApplicationSettingsBase.Synchronized(new GeneralSettings())));
@@ -80,6 +80,18 @@ namespace JewelleryManagementSystem {
             }
             set {
                 this["LastCustomerID"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("StockManagement")]
+        public string StockDirectory {
+            get {
+                return ((string)(this["StockDirectory"]));
+            }
+            set {
+                this["StockDirectory"] = value;
             }
         }
     }

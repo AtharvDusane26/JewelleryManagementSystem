@@ -29,6 +29,7 @@ namespace JewelleryManagementSystem.Settings.View
         {
             metalTab.Content = new MetalSettingsControl();
             ornamentTab.Content = new OrnamentSettingsControl();
+            stockTab.Content = new OrnamentStockSetting();
         }
     }
 }

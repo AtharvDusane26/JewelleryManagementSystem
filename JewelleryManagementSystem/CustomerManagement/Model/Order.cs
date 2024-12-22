@@ -1,6 +1,7 @@
 ﻿using JewelleryManagementSystem.ModelUtilities;
 using JewelleryManagementSystem.OrnamentManagement.Model;
 using JewelleryManagementSystem.RecieptManager;
+using JewelleryManagementSystem.Settings.Model;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -30,6 +31,7 @@ namespace JewelleryManagementSystem.CustomerManagement.Model
         void AddJewellery(IJewellery jewellery);
         void RemoveJewellery(IJewellery jewellery);
         void UpdatePaidAmount();
+        void UpdateStock();
 
     }
     [DataContract]
@@ -57,7 +59,7 @@ namespace JewelleryManagementSystem.CustomerManagement.Model
             _paidAmountInstallments = new List<float> { 0 };
         }
         [IgnoreDataMember]
-        public IOrderCustomer Customer { get; private set; }       
+        public IOrderCustomer Customer { get; private set; }
         [DataMember]
         public bool IsCompleted
         {
@@ -250,6 +252,22 @@ namespace JewelleryManagementSystem.CustomerManagement.Model
         public float GetTotalAmount()
         {
             return PurchasedJewelleries != null ? PurchasedJewelleries.Sum(o => o.TotalAmount) : 0;
+        }
+        public void UpdateStock()
+        {
+            if (IsCompleted)
+            {
+                foreach (var item in PurchasedJewelleries)
+                {
+                    var stock = StockManager.Instance.OrnamentStocks.Where(o => o.Ornament == item.Ornament.ToString()).FirstOrDefault();
+                    if (stock != null)
+                    {
+                        stock.AvailableStock -= 1;
+                        StockManager.Instance.AddOrUpdateStock(stock);
+                    }
+                }
+
+            }           
         }
         public override string ToString()
         {

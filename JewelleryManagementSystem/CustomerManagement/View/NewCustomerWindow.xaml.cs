@@ -44,7 +44,7 @@ namespace JewelleryManagementSystem.CustomerManagement.View
         private void btnCreateOrder_Click(object sender, RoutedEventArgs e)
         {
             var noUse = _customerManager.OrderManager.GetNewOrder();
-            var newOrderWindow = new NewOrderWindow(_customerManager.OrderManager);
+            var newOrderWindow = new NewOrderWindow(_customerManager.OrderManager, Update);
             newOrderWindow.Owner = this;
             newOrderWindow.ShowDialog();
             UpdateDataGridVisibility();
@@ -71,7 +71,7 @@ namespace JewelleryManagementSystem.CustomerManagement.View
                     if (order.IsCompleted)
                         return;
                     _customerManager.OrderManager.Order = order;
-                    var newOrderWindow = new NewOrderWindow(_customerManager.OrderManager);
+                    var newOrderWindow = new NewOrderWindow(_customerManager.OrderManager , Update);
                     newOrderWindow.Owner = this;
                     newOrderWindow.btnAddOrder.IsEnabled = !_customerManager.OrderManager.Order.IsCompleted;
                     newOrderWindow.btnAddOrder.Content = "Update";
@@ -80,7 +80,11 @@ namespace JewelleryManagementSystem.CustomerManagement.View
                 }
             }
         }
-
+        private void Update()
+        {
+            _customerManager.AddOrUpdateCustomer(out string message);
+            MessageBox.Show(message, ProductInformation.ShopName, MessageBoxButton.OK, MessageBoxImage.Information);
+        }
         private void btnCreateCustomer_Click(object sender, RoutedEventArgs e)
         {
             if (_customerManager.Customer == null) return;
