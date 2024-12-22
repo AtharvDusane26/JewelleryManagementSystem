@@ -31,7 +31,6 @@ namespace JewelleryManagementSystem.Settings.View
         }
         private void Build()
         {
-            cmbOrnaments.Items.Clear();
             cmbOrnaments.ItemsSource = OrnamentManager.Instance.AvailableOrnaments;
             cmbOrnaments.SelectedIndex = 0;
         }
