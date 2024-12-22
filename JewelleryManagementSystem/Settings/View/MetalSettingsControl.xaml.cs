@@ -1,4 +1,5 @@
-﻿using JewelleryManagementSystem.Settings.Model;
+﻿using JewelleryManagementSystem.OrnamentManagement.Model;
+using JewelleryManagementSystem.Settings.Model;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -21,15 +22,48 @@ namespace JewelleryManagementSystem.Settings.View
     /// </summary>
     public partial class MetalSettingsControl : UserControl
     {
+        private IMetal _metal;
         private MetalManager _instance;
         public MetalSettingsControl()
         {
             InitializeComponent();
-            Loaded += OnLoaded;
+            Loaded +=(o,e)=> Build();
         }
-        private void OnLoaded(object sender, RoutedEventArgs e)
+        private void Build()
         {
             _instance = MetalManager.Instance;
+            cmbEnumMakingWeightType.ItemsSource = Enum.GetValues<WeightType>();
+            cmbEnumRateWeightType.ItemsSource = Enum.GetValues<WeightType>();
+            cmbMetalList.ItemsSource = _instance.AvailableMetals;
+        }
+        
+        private void cmbMetalList_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            if(sender is ComboBox cmbMetalList)
+            {
+                var selectedMetal = cmbMetalList.SelectedItem as IMetal;
+                var metal = _instance.AvailableMetals.Where(o => o.MetalID == selectedMetal.MetalID). FirstOrDefault();
+                if(metal != null)
+                    DataContext = _metal = metal.Clone();
+            }
+        }
+
+        private void btnClear_Click(object sender, RoutedEventArgs e)
+        {
+            cmbMetalList.SelectedIndex = -1;
+            DataContext = _metal = _instance.GetNewMetal();           
+        }
+
+        private void btnUpdate_Click(object sender, RoutedEventArgs e)
+        {
+            if(_instance.AddOrUpdateMetal(_metal))
+            {
+                MessageBox.Show("Updated Metal List", ProductInformation.OwnerName, MessageBoxButton.OK, MessageBoxImage.Information);
+                Build();
+            }
+            else
+                MessageBox.Show("Unable to update Metal List", ProductInformation.OwnerName, MessageBoxButton.OK, MessageBoxImage.Error);
+
         }
     }
 }

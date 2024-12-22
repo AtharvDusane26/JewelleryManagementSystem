@@ -57,7 +57,7 @@ namespace JewelleryManagementSystem
         private void _btnSettings_Click(object sender, RoutedEventArgs e)
         {
             var settingsWindow = new SettingsWindow();
-            settingsWindow.Owner = Window.GetWindow(this);
+           // settingsWindow.Owner = Window.GetWindow(this);
             settingsWindow.Show();
 
         }

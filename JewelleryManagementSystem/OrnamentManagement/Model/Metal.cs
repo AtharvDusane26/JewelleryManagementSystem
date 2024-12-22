@@ -14,6 +14,7 @@ namespace JewelleryManagementSystem.OrnamentManagement.Model
     }
     public interface IMetal
     {
+        public string MetalID { get;}
         public string MetalName { get; set; }
         public float MakingCharges { get; set; }
         public WeightType WeightTypeForRate { get; set; }
@@ -29,6 +30,15 @@ namespace JewelleryManagementSystem.OrnamentManagement.Model
         private float _makingCharges;
         private WeightType _weightTypeForRate;
         public WeightType _weightTypeForMaking;
+        public Metal()
+        {
+            MetalID = Guid.NewGuid().ToString();
+        }
+        [DataMember]
+        public string MetalID
+        {
+            get;private set;
+        }
         [DataMember]
         public string MetalName
         {
@@ -93,6 +103,7 @@ namespace JewelleryManagementSystem.OrnamentManagement.Model
         {
             return new Metal()
             {
+                MetalID = this.MetalID,
                 MetalName = this.MetalName,
                 MakingCharges = this.MakingCharges,
                 WeightTypeForRate = this.WeightTypeForRate,

@@ -17,9 +17,30 @@ namespace JewelleryManagementSystem.OrnamentManagement.Model
     {
         private IMetal _metal;
         private string _name;
-        private WeightType _makingChargeType;
+        private WeightType? _makingChargeType = null;
         private float? _makingCharges = null;
-
+        private bool _isMakingUpdateFromMetal;
+        public Ornament()
+        {
+            OrnamentID = Guid.NewGuid().ToString();
+        }
+        [DataMember]
+        public bool IsMakingUpdateFromMetal
+        {
+            get => _isMakingUpdateFromMetal;
+            set
+            {
+                if(_isMakingUpdateFromMetal == value) return;
+                _isMakingUpdateFromMetal = value;
+                OnPropertyChanged(nameof(IsMakingUpdateFromMetal));
+                UpdatedRateAndMaking();
+            }
+        }
+        [DataMember]
+        public string OrnamentID
+        {
+            get; private set;
+        }
         [DataMember]
         public string Name
         {
@@ -45,7 +66,7 @@ namespace JewelleryManagementSystem.OrnamentManagement.Model
             }
         }
         [DataMember]
-        public WeightType MakingChargeType
+        public WeightType? MakingChargeType
         {
             get => _makingChargeType;
             set
@@ -70,22 +91,33 @@ namespace JewelleryManagementSystem.OrnamentManagement.Model
         }
         public void UpdatedRateAndMaking()
         {
-            MakingChargeType = Metal.WeightTypeForMaking;
-            MakingCharges = Metal.MakingCharges;
+            if(Metal == null) return;
+            if (IsMakingUpdateFromMetal)
+            {
+                MakingChargeType = Metal.WeightTypeForMaking;
+                MakingCharges = Metal.MakingCharges;
+            }
+            else
+            {
+                MakingChargeType = WeightType.InGram;
+                MakingCharges = 0;
+            }
         }
         public Ornament Clone()
         {
             return new Ornament()
             {
+                OrnamentID = this.OrnamentID,
                 Name = this.Name,
                 Metal = this.Metal.Clone(),
                 MakingCharges = this.MakingCharges,
                 MakingChargeType = this.MakingChargeType,
+                IsMakingUpdateFromMetal = this.IsMakingUpdateFromMetal,
             };
         }
         public override string ToString()
         {
-            return Name + $" ({Metal.ToString()})";
+            return Name + $" ({Metal?.ToString()})";
         }
         public override bool Equals(object? obj)
         {

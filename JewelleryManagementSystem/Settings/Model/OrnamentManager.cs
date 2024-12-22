@@ -28,52 +28,30 @@ namespace JewelleryManagementSystem.Settings.Model
                 return _instance;
             }
         }
-        public void AddOrUpdateOrnament(string name, Metal metal)
+
+        public bool AddOrUpdateOrnament(Ornament ornament)
         {
-            var ornament = GetOrnamentIfPresent(name, metal);
-            if (ornament != null)
+            if(AvailableOrnaments == null)
+                return false;
+            var presentOrnament = GetOrnamentIfPresent(ornament);
+            if (presentOrnament != null)
             {
-                ornament.Name = name;
-                ornament.Metal = metal;
+                AvailableOrnaments.Remove(AvailableOrnaments.FirstOrDefault(o => o.OrnamentID == presentOrnament.OrnamentID));
             }
-            else
-            {
-                ornament = new Ornament()
-                {
-                    Name = name,
-                    Metal = metal
-                };
-                _availableOrnaments.Add(ornament);
-                Save();
-            }
+            if (ornament.IsMakingUpdateFromMetal)
+                ornament.UpdatedRateAndMaking();
+            AvailableOrnaments.Add(ornament);
+            Save();  
+            return true;
+       }
+        public Ornament GetNewOrnament()
+        {
+            return new Ornament();
         }
-        public void AddOrUpdateOrnament(string name, Metal metal, WeightType makingChargeType, float makingCharge)
+        private Ornament GetOrnamentIfPresent(Ornament ornament)
         {
-            var ornament = GetOrnamentIfPresent(name, metal);
-            if (ornament != null)
-            {
-                ornament.Name = name;
-                ornament.Metal = metal;
-                ornament.MakingCharges = makingCharge;
-                ornament.MakingChargeType = makingChargeType;
-            }
-            else
-            {
-                ornament = new Ornament()
-                {
-                    Name = name,
-                    Metal = metal,
-                    MakingCharges = makingCharge,
-                    MakingChargeType = makingChargeType
-                };
-                _availableOrnaments.Add(ornament);
-                Save();
-            }
-        }
-        private Ornament GetOrnamentIfPresent(string name, Metal metal)
-        {
-            Ornament ornament = _availableOrnaments.FirstOrDefault(o => o.Name == name && o.Metal.MetalName == metal.MetalName);
-            return ornament;
+            var retVal = _availableOrnaments.FirstOrDefault(o => o.OrnamentID == ornament.OrnamentID);
+            return retVal;
         }
         private void Save()
         {
@@ -91,16 +69,17 @@ namespace JewelleryManagementSystem.Settings.Model
             Load();
             if (_availableOrnaments.Count == 0)
             {
-                _availableOrnaments.Add(new Ornament { Name = "Gold Ring", Metal = MetalManager.Instance.AvailableMetals.Where(metal => metal.MetalName == "Gold 22 cr.").FirstOrDefault().Clone() });
+                _availableOrnaments.Add(new Ornament { Name = "Gold Ring", Metal = MetalManager.Instance.AvailableMetals.Where(metal => metal.MetalName == "Gold 22 cr.").FirstOrDefault().Clone(), IsMakingUpdateFromMetal = true });
                 _availableOrnaments.Add(new Ornament
                 {
                     Name = "Gold Vedha",
                     Metal = MetalManager.Instance.AvailableMetals.Where(metal => metal.MetalName == "Gold 24 cr.").FirstOrDefault().Clone(),
+                    IsMakingUpdateFromMetal = false,
                     MakingCharges = 0,
                     MakingChargeType
                  = WeightType.InGram
                 });
-                _availableOrnaments.Add(new Ornament { Name = "Silver Painjan", Metal = MetalManager.Instance.AvailableMetals.Where(metal => metal.MetalName.Trim() == "Silver").FirstOrDefault().Clone() });
+                _availableOrnaments.Add(new Ornament { Name = "Silver Painjan", Metal = MetalManager.Instance.AvailableMetals.Where(metal => metal.MetalName.Trim() == "Silver").FirstOrDefault().Clone() , IsMakingUpdateFromMetal = true });
                 Save();
             }
         }

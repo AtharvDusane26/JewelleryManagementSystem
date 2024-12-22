@@ -48,8 +48,6 @@ namespace JewelleryManagementSystem.CustomerManagement.View
                 var selectedOrnament = comboBox.SelectedItem as Ornament;
                 if ((selectedOrnament != null))
                 {
-                    if (selectedOrnament.MakingCharges == null)
-                        selectedOrnament.UpdatedRateAndMaking();
                     _jewellery = new Jewellery();
                     _jewellery.Ornament = selectedOrnament.Clone();
                     jewelleryControl.DataContext = _jewellery;

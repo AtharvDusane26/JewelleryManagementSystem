@@ -7,6 +7,41 @@
              mc:Ignorable="d" 
               HorizontalAlignment="Left" VerticalAlignment="Top">
     <Grid>
-            
+        <Grid.RowDefinitions>
+            <RowDefinition></RowDefinition>
+            <RowDefinition></RowDefinition>
+            <RowDefinition></RowDefinition>
+            <RowDefinition></RowDefinition>
+            <RowDefinition></RowDefinition>
+        </Grid.RowDefinitions>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition></ColumnDefinition>
+            <ColumnDefinition Width="auto"></ColumnDefinition>
+            <ColumnDefinition></ColumnDefinition>
+            <ColumnDefinition></ColumnDefinition>
+        </Grid.ColumnDefinitions>
+        <Label Content="Ornament List" Margin="2" Grid.Row="0" Grid.Column="0"></Label>
+        <ComboBox x:Name="cmbOrnamentList" HorizontalAlignment="Left" Height="30" Width="160" Margin="3" SelectionChanged="cmbOrnamentList_SelectionChanged" SelectedIndex="0" Grid.Row="0" Grid.Column="1"></ComboBox>
+        <Label Content="Ornament Name" Grid.Row="0" Grid.Column="2" Margin="10,0,0,0"></Label>
+        <TextBox Text="{Binding Name}" HorizontalAlignment="Left" Grid.Row="0" Grid.Column="3"></TextBox>
+
+        <Label Content="Metal"  Margin="2" Grid.Row="1" Grid.Column="0"></Label>
+        <StackPanel Orientation="Horizontal" Grid.Row="1" Grid.Column="1">
+            <TextBox Text="{Binding Metal.MetalName}" IsReadOnly="True" ></TextBox>
+            <ComboBox x:Name="cmbMetalList" SelectedItem="{Binding Metal}" Height="25" Width="90" SelectedIndex="0"></ComboBox>
+        </StackPanel>
+
+        <Label Content="Making Charges"  Margin="2" Grid.Row="2" Grid.Column="0"></Label>
+        <StackPanel Orientation="Horizontal" Grid.Row="2" Grid.Column="1">
+            <TextBox Text="{Binding MakingCharges}" HorizontalAlignment="Left" ></TextBox>
+            <CheckBox x:Name="chkUpdateMetalMaking" Content="Update Making" VerticalAlignment="Center" IsChecked="{Binding IsMakingUpdateFromMetal}"></CheckBox>
+        </StackPanel>
+        <Label Content="Weight Type(Making)" Grid.Row="2" Margin="10,0,0,0" Grid.Column="2"></Label>
+        <StackPanel Orientation="Horizontal" Grid.Row="2" Grid.Column="3">
+            <TextBox Text="{Binding MakingChargeType}" IsReadOnly="True" ></TextBox>
+            <ComboBox x:Name="cmbEnumMakingWeightType" SelectedItem="{Binding MakingChargeType}" Height="25" Width="80"></ComboBox>
+        </StackPanel>
+        <Button x:Name="btnClear" Content="Clear" Grid.Row="4" Grid.Column="0" Margin="2" Click="btnClear_Click"></Button>
+        <Button x:Name="btnUpdate" Content="Update Metals" Grid.Row="4" Grid.Column="1" HorizontalAlignment="Left" Margin="2" Click="btnUpdate_Click"></Button>
     </Grid>
 </UserControl>

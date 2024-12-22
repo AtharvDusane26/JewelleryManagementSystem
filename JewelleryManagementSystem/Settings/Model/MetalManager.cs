@@ -33,18 +33,15 @@ namespace JewelleryManagementSystem.Settings.Model
         {
             if (_availableMetals == null)
                 return false;
-            if (_availableMetals.Any(o => o.MetalName.ToLower().Trim() == metal.MetalName.ToLower().Trim()))
+            if (_availableMetals.Any(o => o.MetalID.ToLower().Trim() == metal.MetalID.ToLower().Trim()))
             {
-                metal = _availableMetals.FirstOrDefault(o => o.MetalName.ToLower().Trim() == metal.MetalName.ToLower().Trim());
-                metal.MetalName = metal.MetalName;
-                metal.MetalRate = metal.MetalRate;
-                metal.MakingCharges = metal.MakingCharges;
-                metal.WeightTypeForRate = metal.WeightTypeForRate;
-                metal.WeightTypeForMaking = metal.WeightTypeForMaking;
+                _availableMetals.Remove(_availableMetals.FirstOrDefault(o => o.MetalID == metal.MetalID));
             }
-            else
-                _availableMetals.Add(metal);
+            AvailableMetals.Add(metal);
             SaveMetalList();
+            var ornaments = OrnamentManager.Instance.AvailableOrnaments.Where(o => o.Metal.MetalID == metal.MetalID).ToList();
+            if(ornaments != null)
+                ornaments.ForEach(o => o.Metal = metal);
             return true;
         }
         public IMetal GetNewMetal()

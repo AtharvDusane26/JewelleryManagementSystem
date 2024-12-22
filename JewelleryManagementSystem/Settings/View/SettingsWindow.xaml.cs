@@ -23,6 +23,12 @@ namespace JewelleryManagementSystem.Settings.View
         {
             InitializeComponent();
             Title = ProductInformation.ShopName;
+            Loaded += (o, e) => Build();
+        }
+        private void Build()
+        {
+            metalTab.Content = new MetalSettingsControl();
+            ornamentTab.Content = new OrnamentSettingsControl();
         }
     }
 }

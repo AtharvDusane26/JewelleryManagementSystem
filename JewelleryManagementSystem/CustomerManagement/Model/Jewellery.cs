@@ -73,7 +73,7 @@ namespace JewelleryManagementSystem.CustomerManagement.Model
                     }
                     else
                     {
-                        return $"{GetRatePerGram(Ornament.MakingCharges.Value, Ornament.MakingChargeType)} Rs. per gram";
+                        return $"{GetRatePerGram(Ornament.MakingCharges.Value, Ornament.MakingChargeType.Value)} Rs. per gram";
                     }
                 }
                 return "0";
@@ -91,7 +91,7 @@ namespace JewelleryManagementSystem.CustomerManagement.Model
                 }
                 else
                 {
-                    var makingChagesInGram = GetRatePerGram(Ornament.MakingCharges.Value, Ornament.MakingChargeType);
+                    var makingChagesInGram = GetRatePerGram(Ornament.MakingCharges.Value, Ornament.MakingChargeType.Value);
                     TotalAmount = (metalRateInGram + makingChagesInGram) * weightInGram;
                 }
             }
