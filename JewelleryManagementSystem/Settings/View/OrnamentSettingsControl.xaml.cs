@@ -60,11 +60,11 @@ namespace JewelleryManagementSystem.Settings.View
 
             if (_instance.AddOrUpdateOrnament(_ornament))
             {
-                MessageBox.Show("Updated Ornament List", ProductInformation.OwnerName, MessageBoxButton.OK, MessageBoxImage.Information);
+                MessageBox.Show("Updated Ornament List", ProductInformation.Instance.OwnerName, MessageBoxButton.OK, MessageBoxImage.Information);
                 Build();
             }
             else
-                MessageBox.Show("Unable to update Ornament List", ProductInformation.OwnerName, MessageBoxButton.OK, MessageBoxImage.Error);
+                MessageBox.Show("Unable to update Ornament List", ProductInformation.Instance.OwnerName, MessageBoxButton.OK, MessageBoxImage.Error);
         }
 
         private void btnClear_Click(object sender, RoutedEventArgs e)

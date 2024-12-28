@@ -20,5 +20,8 @@
     <Setting Name="StockDirectory" Type="System.String" Scope="User">
       <Value Profile="(Default)">StockManagement</Value>
     </Setting>
+    <Setting Name="Password" Type="System.String" Scope="User">
+      <Value Profile="(Default)" />
+    </Setting>
   </Settings>
 </SettingsFile>

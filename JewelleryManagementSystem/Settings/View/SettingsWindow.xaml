@@ -15,6 +15,7 @@
             </TabItem>
             <TabItem x:Name="ornamentTab" Height="30" Width="120" Header="Ornament Settings"></TabItem>
             <TabItem x:Name="stockTab" Height="30" Width="120" Header="Stock Settings"></TabItem>
+            <TabItem x:Name="generalSettingTab" Height="30" Width="120" Header="General Settings"></TabItem>
         </TabControl>
     </Grid>
 </Window>

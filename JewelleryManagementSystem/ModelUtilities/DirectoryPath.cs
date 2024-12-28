@@ -14,6 +14,7 @@ namespace JewelleryManagementSystem.ModelUtilities
         private static string _ornamentDirecory = Path.Combine(GeneralSettings.Default.BaseDirectory, GeneralSettings.Default.OrnamentDirectory);
         private static string _customerDirectory = Path.Combine(GeneralSettings.Default.BaseDirectory,GeneralSettings.Default.CustomerDirectory);
         private static string _stockDirectory = Path.Combine(GeneralSettings.Default.BaseDirectory, GeneralSettings.Default.StockDirectory);
+        private static string _productDirectory = GeneralSettings.Default.BaseDirectory;
         private DirectoryPath()
         {
             CreateDirectoryPath();
@@ -46,6 +47,11 @@ namespace JewelleryManagementSystem.ModelUtilities
         {
             get => _stockDirectory;
             private set => _stockDirectory = value;
+        }
+        public static string ProductDirectory
+        {
+            get => _productDirectory;
+            private set => _productDirectory = value;
         }
         private static void CreateDirectoryPath()
         {

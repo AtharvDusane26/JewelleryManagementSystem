@@ -21,7 +21,7 @@ namespace JewelleryManagementSystem.UIUtilities
         {
             InitializeComponent();
             _component = component;
-            this.Title = $"{ProductInformation.ProductName} - {ProductInformation.ProductVersion}" ;
+            this.Title = $"{ProductInformation.Instance.ProductName} - {ProductInformation.Instance.ProductVersion}" ;
             this.Loaded += (o, e) => OnLoaded();
             _component = component;
         }

@@ -1,4 +1,5 @@
-﻿using System;
+﻿using JewelleryManagementSystem.UIUtilities;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -22,14 +23,27 @@ namespace JewelleryManagementSystem.Settings.View
         public SettingsWindow()
         {
             InitializeComponent();
-            Title = ProductInformation.ShopName;
+            Title = ProductInformation.Instance.ShopName;
             Loaded += (o, e) => Build();
         }
         private void Build()
         {
-            metalTab.Content = new MetalSettingsControl();
-            ornamentTab.Content = new OrnamentSettingsControl();
-            stockTab.Content = new OrnamentStockSetting();
+        label1:
+            var box = new PasswordBoxWindow();
+            box.Owner = this;
+            if (box.ShowDialog() == true)
+            {
+                if (box.Proceed)
+                {
+                    metalTab.Content = new MetalSettingsControl();
+                    ornamentTab.Content = new OrnamentSettingsControl();
+                    stockTab.Content = new OrnamentStockSetting();
+                    generalSettingTab.Content = new GeneralSettingsControl();
+                }
+                else
+                    goto label1;
+            }
+
         }
     }
 }

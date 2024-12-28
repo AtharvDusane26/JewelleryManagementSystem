@@ -15,6 +15,7 @@
                     <RowDefinition Height="auto"></RowDefinition>
                     <RowDefinition Height="auto"></RowDefinition>
                     <RowDefinition Height="auto"></RowDefinition>
+                    <RowDefinition Height="auto"></RowDefinition>
                 </Grid.RowDefinitions>
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width='auto'></ColumnDefinition>
@@ -23,18 +24,23 @@
                 <Label Content="Ornament" Grid.Row="0" Grid.Column="0"></Label>
                 <ComboBox x:Name="cmbJewellery" Height="25" Width="160" Grid.Row="0" Grid.Column="1" ></ComboBox>
                 <TextBox x:Name="txtJewellery" Height="25" Width="160" Grid.Row="0" Grid.Column="1" IsReadOnly="True" Visibility="Collapsed"></TextBox>
-                <Label Content="Weight" Grid.Row="1" Grid.Column="0"></Label>
+                <Label Content="Net Weight" Grid.Row="1" Grid.Column="0"></Label>
                 <StackPanel Grid.Row="1" Grid.Column="1" Orientation="Horizontal" HorizontalAlignment="Center">
-                    <TextBox x:Name="txtWeight" Height="25" Text="{Binding Weight}" Width="110" Grid.Row="1" Grid.Column="1"></TextBox>
+                    <TextBox x:Name="txtWeight" Height="25" Text="{Binding NetWeight}" Width="110" Grid.Row="1" Grid.Column="1"></TextBox>
                     <Label Content="(In Gm.)" Grid.Row="1" Grid.Column="0"></Label>
                 </StackPanel>
-                <Label Content="Making Charges" Grid.Row="2" Grid.Column="0"></Label>
-                <Label x:Name="lblMaking" Content="{Binding MakingChargesPerGram , Mode=OneWay}" Grid.Row="2" Grid.Column="1"></Label>
-                <Label Content="Total Amount" Grid.Row="3" Grid.Column="0"></Label>
-                <TextBox x:Name="txtAmount" Height="25" Width="160"  Grid.Row="3" Grid.Column="1" Text="{Binding TotalAmount , Mode=OneWay}" IsReadOnly="True"></TextBox>
+                <Label Content="Gross Weight" Grid.Row="2" Grid.Column="0"></Label>
+                <StackPanel Grid.Row="2" Grid.Column="1" Orientation="Horizontal" HorizontalAlignment="Center">
+                    <TextBox x:Name="txtGrossWeight" Height="25" Text="{Binding GrossWeight}" Width="110" Grid.Row="2" Grid.Column="1"></TextBox>
+                    <Label Content="(In Gm.)" Grid.Row="1" Grid.Column="0"></Label>
+                </StackPanel>
+                <Label Content="Making Charges" Grid.Row="3" Grid.Column="0"></Label>
+                <Label x:Name="lblMaking" Content="{Binding MakingChargesPerGram , Mode=OneWay}" Grid.Row="3" Grid.Column="1"></Label>
+                <Label Content="Total Amount" Grid.Row="4" Grid.Column="0"></Label>
+                <TextBox x:Name="txtAmount" Height="25" Width="160"  Grid.Row="4" Grid.Column="1" Text="{Binding TotalAmount , Mode=OneWay}" IsReadOnly="True"></TextBox>
 
-                <Button x:Name="btnAddJewellery" Grid.Row="4" Grid.Column="0" Content="Add"></Button>
-                <Button x:Name="btnRemoveJewellery" Grid.Row="4" Grid.Column="1" Content="Remove" HorizontalAlignment="Left" Visibility="Collapsed"></Button>
+                <Button x:Name="btnAddJewellery" Grid.Row="5" Grid.Column="0" Content="Add"></Button>
+                <Button x:Name="btnRemoveJewellery" Grid.Row="5" Grid.Column="1" Content="Remove" HorizontalAlignment="Left" Visibility="Collapsed"></Button>
             </Grid>
         </GroupBox>
     </Grid>

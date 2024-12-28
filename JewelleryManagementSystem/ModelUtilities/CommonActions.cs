@@ -13,7 +13,7 @@ namespace JewelleryManagementSystem.ModelUtilities
     [DataContract]
     public class CommonActions
     {
-        protected  Action<String> OnShowMessageBox;
+        public Action<String> OnShowMessageBox;
     }
     public interface ICommonComponent : INotifyPropertyChanged { }
     [DataContract]

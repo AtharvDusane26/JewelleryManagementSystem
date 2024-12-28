@@ -30,10 +30,11 @@ namespace JewelleryManagementSystem.CustomerManagement.View
     {
         private CustomerManager _customerManager;
         private ICustomer _customer;
+
         public NewCustomerWindow(CustomerManager customerManager)
         {
             InitializeComponent();
-            Title = ProductInformation.ShopName;
+            Title = ProductInformation.Instance.ShopName;
             _customerManager = customerManager;
             _customer = customerManager.Customer != null ? customerManager.Customer : _customerManager.GetNewCustomer();
             DataContext = _customer;
@@ -83,14 +84,14 @@ namespace JewelleryManagementSystem.CustomerManagement.View
         private void Update()
         {
             _customerManager.AddOrUpdateCustomer(out string message);
-            MessageBox.Show(message, ProductInformation.ShopName, MessageBoxButton.OK, MessageBoxImage.Information);
+            MessageBox.Show(message, ProductInformation.Instance.ShopName, MessageBoxButton.OK, MessageBoxImage.Information);
         }
         private void btnCreateCustomer_Click(object sender, RoutedEventArgs e)
         {
             if (_customerManager.Customer == null) return;
             var customer = _customerManager.Customer;
             _customerManager.AddOrUpdateCustomer(out string message);
-            MessageBox.Show(message, ProductInformation.ShopName, MessageBoxButton.OK, MessageBoxImage.Information);
+            MessageBox.Show(message, ProductInformation.Instance.ShopName, MessageBoxButton.OK, MessageBoxImage.Information);
         }
 
         private void btnDeleteOrder_Click(object sender, RoutedEventArgs e)
@@ -98,13 +99,13 @@ namespace JewelleryManagementSystem.CustomerManagement.View
             var order = dataGridOrders.SelectedItem as IOrder;
             if (order != null && !order.IsCompleted)
             {
-                var result = MessageBox.Show("Are you sure,do you want to delete order ?", ProductInformation.ShopName, MessageBoxButton.YesNo, MessageBoxImage.Question);
+                var result = MessageBox.Show("Are you sure,do you want to delete order ?", ProductInformation.Instance.ShopName, MessageBoxButton.YesNo, MessageBoxImage.Question);
                 if (result == MessageBoxResult.Yes)
                 {
                     if (_customer is IOrderCustomer orderCustomer)
                     {
                         orderCustomer.OrderList.Remove(order);
-                        MessageBox.Show("Order Deleted", ProductInformation.ShopName, MessageBoxButton.OK, MessageBoxImage.Information);
+                        MessageBox.Show("Order Deleted", ProductInformation.Instance.ShopName, MessageBoxButton.OK, MessageBoxImage.Information);
                         if (_customer is CommonComponent component)
                             component.OnAllPropertyChanged();
                     }
@@ -115,11 +116,11 @@ namespace JewelleryManagementSystem.CustomerManagement.View
             {
                 if (order == null)
                 {
-                    MessageBox.Show("Please select the order to be delete", ProductInformation.ShopName, MessageBoxButton.OK, MessageBoxImage.Information);
+                    MessageBox.Show("Please select the order to be delete", ProductInformation.Instance.ShopName, MessageBoxButton.OK, MessageBoxImage.Information);
                     return;
                 }
                 if (order.IsCompleted)
-                    MessageBox.Show("Completed order could not be delete", ProductInformation.ShopName, MessageBoxButton.OK, MessageBoxImage.Information);
+                    MessageBox.Show("Completed order could not be delete", ProductInformation.Instance.ShopName, MessageBoxButton.OK, MessageBoxImage.Information);
 
             }
         }
@@ -138,7 +139,7 @@ namespace JewelleryManagementSystem.CustomerManagement.View
                     OrderStatus = order.OrderStatus,
                 };
                 var window = new RecieptWindow(reciept);
-                window.Title = ProductInformation.ShopName;
+                window.Title = ProductInformation.Instance.ShopName;
                 window.Owner = this;
                 window.ShowInTaskbar = false;
                 window.ResizeMode = ResizeMode.CanMinimize;
@@ -146,7 +147,7 @@ namespace JewelleryManagementSystem.CustomerManagement.View
                 window.Show();
             }
             else
-                MessageBox.Show("Please select the order to be create reciept", ProductInformation.ShopName, MessageBoxButton.OK, MessageBoxImage.Information);
+                MessageBox.Show("Please select the order to be create reciept", ProductInformation.Instance.ShopName, MessageBoxButton.OK, MessageBoxImage.Information);
         }
     }
 }

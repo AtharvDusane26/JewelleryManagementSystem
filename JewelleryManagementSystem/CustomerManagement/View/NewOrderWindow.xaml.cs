@@ -30,7 +30,7 @@ namespace JewelleryManagementSystem.CustomerManagement.View
         public NewOrderWindow(OrderManager orderManager, Action updateCustomer)
         {
             InitializeComponent();
-            Title = ProductInformation.ShopName;
+            Title = ProductInformation.Instance.ShopName;
             _orderManager = orderManager;
             _order = orderManager.Order != null ? orderManager.Order : orderManager.GetNewOrder();
             DataContext = _order;
@@ -58,7 +58,7 @@ namespace JewelleryManagementSystem.CustomerManagement.View
                 {
                     if (StockManager.Instance.CheckStockAvailability(selectedOrnament) == 0)
                     {
-                        MessageBox.Show($"{selectedOrnament.Name} is out of stock", ProductInformation.ProductName, MessageBoxButton.OK, MessageBoxImage.Error);
+                        MessageBox.Show($"{selectedOrnament.Name} is out of stock", ProductInformation.Instance.ProductName, MessageBoxButton.OK, MessageBoxImage.Error);
                         jewelleryControl.cmbJewellery.SelectedIndex = -1;
                         return;
                     }
@@ -75,9 +75,9 @@ namespace JewelleryManagementSystem.CustomerManagement.View
         {
             if (_jewellery != null)
             {
-                if (_jewellery.Weight <= 0 || _jewellery.TotalAmount <= 0)
+                if (_jewellery.NetWeight <= 0 || _jewellery.TotalAmount <= 0)
                 { return; }
-                var result = MessageBox.Show("Do you want to confirm", ProductInformation.ShopName, MessageBoxButton.YesNo, MessageBoxImage.Question);
+                var result = MessageBox.Show("Do you want to confirm", ProductInformation.Instance.ShopName, MessageBoxButton.YesNo, MessageBoxImage.Question);
                 if (result == MessageBoxResult.Yes)
                     _orderManager.Order.AddJewellery(_jewellery);
                 ResetUI();
@@ -119,16 +119,16 @@ namespace JewelleryManagementSystem.CustomerManagement.View
         {
             if (_orderManager.Order.PurchasedJewelleries.Count <= 0)
                 return;
-            var result = MessageBox.Show("Do you want to confirm order?", ProductInformation.ShopName, MessageBoxButton.YesNo, MessageBoxImage.Question);
+            var result = MessageBox.Show("Do you want to confirm order?", ProductInformation.Instance.ShopName, MessageBoxButton.YesNo, MessageBoxImage.Question);
             if (result == MessageBoxResult.Yes)
             {
                 if (_orderManager.AddOrUpdateOrder())
                 {                 
-                    MessageBox.Show("Order Confirmed", ProductInformation.ShopName, MessageBoxButton.OK, MessageBoxImage.Information);
+                    MessageBox.Show("Order Confirmed", ProductInformation.Instance.ShopName, MessageBoxButton.OK, MessageBoxImage.Information);
                     UpdateCustomer?.Invoke();
                 }
                 else
-                    MessageBox.Show("Order Cancelled", ProductInformation.ShopName, MessageBoxButton.OK, MessageBoxImage.Information);
+                    MessageBox.Show("Order Cancelled", ProductInformation.Instance.ShopName, MessageBoxButton.OK, MessageBoxImage.Information);
             }
         }
 
@@ -145,7 +145,7 @@ namespace JewelleryManagementSystem.CustomerManagement.View
                     var content = new AddJewelleryControl(_jewellery, RemoveJewellery);
                     window.Content = content;
                     window.Owner = this;
-                    window.Title = ProductInformation.ShopName;
+                    window.Title = ProductInformation.Instance .ShopName;
                     window.ResizeMode = ResizeMode.NoResize;
                     window.MaxHeight = 200;
                     window.MaxWidth = 300;

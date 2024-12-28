@@ -81,7 +81,7 @@ namespace JewelleryManagementSystem.RecieptManager
             set => _orderStatus = value;
         }
         [IgnoreDataMember]
-        public string OwnerSignature => ProductInformation.OwenrSignature;
+        public string OwnerSignature => ProductInformation.Instance.OwenrSignature;
     }
     public class RecieptGenerator
     {
@@ -114,8 +114,8 @@ namespace JewelleryManagementSystem.RecieptManager
             html.AppendLine("<div class='receipt'>");
 
             // Header Section
-            html.AppendLine($"<div class='header'>{ProductInformation.ShopName}</div>");
-            html.AppendLine($"<div font-size: 12px; >Shop Address<br>{ProductInformation.Address}<br>{ProductInformation.PhoneNumber}</div>");
+            html.AppendLine($"<div class='header'>{ProductInformation.Instance.ShopName}</div>");
+            html.AppendLine($"<div font-size: 12px; >Shop Address<br>{ProductInformation.Instance.Address}<br>{ProductInformation.Instance.PhoneNumber}</div>");
             html.AppendLine($"<div style='text-align:right;  font-size: 14px; margin-top:10px;'>DATE: {DateTime.Now.ToShortDateString()}<br>RECEIPT NO.: {receipt.ReceiptID}</div>");
 
             // Bill To and Ship To
@@ -128,13 +128,14 @@ namespace JewelleryManagementSystem.RecieptManager
             // Table for Purchased Items
             html.AppendLine("<table>");
             html.AppendLine("<tr>");
-            html.AppendLine("<th>Name</th><th>Weight/Gram</th><th>Making/Gram</th>");
+            html.AppendLine("<th>Name</th><th>Gross Weight(Gram)</th><th>Net Weight(Gram)</th><th>Making/Gram</th>");
             html.AppendLine("</tr>");
             foreach (var jewellery in receipt.PurchasedJewelleries)
             {
                 html.AppendLine("<tr>");
                 html.AppendLine($"<td>{jewellery.Ornament.Name}</td>");
-                html.AppendLine($"<td>{jewellery.Weight}</td>");
+                html.AppendLine($"<td>{jewellery.GrossWeight}</td>");
+                html.AppendLine($"<td>{jewellery.NetWeight}</td>");
                 html.AppendLine($"<td>{jewellery.MakingChargesPerGram}</td>");
                 html.AppendLine("</tr>");
             }
@@ -153,7 +154,7 @@ namespace JewelleryManagementSystem.RecieptManager
             html.AppendLine("</div>");
 
             // Footer and Notes
-            html.AppendLine($"<div text-align:right;>{ProductInformation.OwenrSignature}<br><div style='text-align:left; font-size: 12px;'>(This is an auto-generated signature)</div></div>");
+            html.AppendLine($"<div text-align:right;>{ProductInformation.Instance.OwenrSignature}<br><div style='text-align:left; font-size: 12px;'>(This is an auto-generated signature)</div></div>");
             html.AppendLine("<div class='footer'>THANK YOU FOR YOUR VISIT..!</div>");
 
             // Closing tags

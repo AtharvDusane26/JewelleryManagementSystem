@@ -12,7 +12,8 @@ namespace JewelleryManagementSystem.CustomerManagement.Model
     public interface IJewellery
     {
         Ornament Ornament { get; set; }
-        float Weight { get; }
+        float NetWeight { get; }
+        float GrossWeight {  get; } 
         WeightType SelectedWeightType { get; }
         float TotalAmount { get; }
         string MakingChargesPerGram { get; }
@@ -22,7 +23,8 @@ namespace JewelleryManagementSystem.CustomerManagement.Model
     {
         private Ornament _ornament;
         private float _totalAmount;
-        private float _weight = 0f;
+        private float _netWeight = 0f;
+        private float _grossWeight = 0f;
         [DataMember]
         public Ornament Ornament
         {
@@ -36,15 +38,26 @@ namespace JewelleryManagementSystem.CustomerManagement.Model
             }
         }
         [DataMember]
-        public float Weight
+        public float NetWeight
         {
-            get => _weight;
+            get => _netWeight;
             set
             {
-                if (_weight == value) return;
-                _weight = value;
-                OnPropertyChanged(nameof(Weight));
+                if (_netWeight == value) return;
+                _netWeight = value;
+                OnPropertyChanged(nameof(NetWeight));
                 CalculateTotalAmount();
+            }
+        }
+        [DataMember]
+        public float GrossWeight
+        {
+            get => _grossWeight;
+            set
+            {
+                if (_grossWeight == value) return;
+                _grossWeight = value;
+                OnPropertyChanged(nameof(GrossWeight));
             }
         }
         [DataMember]
@@ -81,10 +94,10 @@ namespace JewelleryManagementSystem.CustomerManagement.Model
         }
         public void CalculateTotalAmount()
         {
-            if (Ornament != null && Weight != 0 && SelectedWeightType != null)
+            if (Ornament != null && NetWeight != 0 && SelectedWeightType != null)
             {
                 var metalRateInGram = GetRatePerGram(Ornament.Metal.MetalRate, Ornament.Metal.WeightTypeForRate);
-                var weightInGram = GetRatePerGram(Weight, SelectedWeightType);
+                var weightInGram = GetRatePerGram(NetWeight, SelectedWeightType);
                 if (Ornament.MakingChargeType == WeightType.LumSumForMakingOnly)
                 {
                     TotalAmount = (metalRateInGram * weightInGram) + Ornament.MakingCharges.Value;
@@ -121,7 +134,7 @@ namespace JewelleryManagementSystem.CustomerManagement.Model
             if (ReferenceEquals(null, obj)) return false;
             var jewelleryObj = obj as IJewellery;
             if (jewelleryObj == null) return false;
-            if(jewelleryObj.Ornament.ToString() == Ornament?.ToString() && jewelleryObj.Weight == Weight && jewelleryObj.TotalAmount == TotalAmount) return true;
+            if(jewelleryObj.Ornament.ToString() == Ornament?.ToString() && jewelleryObj.NetWeight == NetWeight && jewelleryObj.TotalAmount == TotalAmount) return true;
             return false;
         }
     }

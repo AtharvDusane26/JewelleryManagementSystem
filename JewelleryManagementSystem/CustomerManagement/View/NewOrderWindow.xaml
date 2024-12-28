@@ -18,7 +18,7 @@
         </Grid.ColumnDefinitions>
             <Grid Grid.Column="1">
                 <Grid.RowDefinitions>
-                    <RowDefinition></RowDefinition>
+                    <RowDefinition Height="auto"></RowDefinition>
                     <RowDefinition></RowDefinition>
                 </Grid.RowDefinitions>
                 <local:AddJewelleryControl x:Name="jewelleryControl"></local:AddJewelleryControl>

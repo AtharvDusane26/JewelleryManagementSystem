@@ -7,6 +7,41 @@
              mc:Ignorable="d" 
             HorizontalAlignment="Left" VerticalAlignment="Top">
     <Grid>
-            
-    </Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition></RowDefinition>
+            <RowDefinition></RowDefinition>
+            <RowDefinition></RowDefinition>
+            <RowDefinition></RowDefinition>
+            <RowDefinition></RowDefinition>
+            <RowDefinition></RowDefinition>
+        </Grid.RowDefinitions>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition></ColumnDefinition>
+            <ColumnDefinition></ColumnDefinition>
+            <ColumnDefinition></ColumnDefinition>
+            <ColumnDefinition></ColumnDefinition>
+        </Grid.ColumnDefinitions>
+        <Label Margin="2" Content="Product Name" Grid.Row="0" Grid.Column="0"></Label>
+        <TextBox Text="{Binding ProductName, Mode=OneWay}" IsReadOnly="True" HorizontalAlignment="Left" Grid.Column="1" Grid.Row="0"></TextBox>
+
+        <Label  Margin="2" Content="Product Version" Grid.Row="0" Grid.Column="2"></Label>
+        <TextBox Text="{Binding ProductVersion, Mode=OneWay}" IsReadOnly="True" HorizontalAlignment="Left" Grid.Column="3" Grid.Row="0"></TextBox>
+
+        <Label  Margin="2" Content="Shop Name" Grid.Row="1" Grid.Column="0"></Label>
+        <TextBox Text="{Binding ShopName}" HorizontalAlignment="Left" Grid.Column="1" Grid.Row="1"></TextBox>
+
+        <Label  Margin="2" Content="Shop Address" Grid.Row="1" Grid.Column="2"></Label>
+        <TextBox Text="{Binding Address}"  HorizontalAlignment="Left" Grid.Column="3" Grid.Row="1"></TextBox>
+
+        <Label  Margin="2" Content="Owner Name" Grid.Row="2" Grid.Column="0"></Label>
+        <TextBox Text="{Binding OwnerName}" HorizontalAlignment="Left" Grid.Column="1" Grid.Row="2"></TextBox>
+
+        <Label  Margin="2" Content="Contact No." Grid.Row="2" Grid.Column="2"></Label>
+        <TextBox Text="{Binding PhoneNumber}" HorizontalAlignment="Left" Grid.Column="3" Grid.Row="2"></TextBox>
+
+        <Label  Margin="2" Content="Password" Grid.Row="3" Grid.Column="0"></Label>
+        <TextBox Text="{Binding Password}" HorizontalAlignment="Left" Grid.Column="1" Grid.Row="3"></TextBox>
+
+        <Button x:Name="btnUpdate" Content="Update" Click="btnUpdate_Click" Grid.Column="0" Grid.ColumnSpan="4" Grid.Row="4"></Button>
+    </Grid> 
 </UserControl>

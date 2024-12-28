@@ -38,10 +38,10 @@ namespace JewelleryManagementSystem.Settings.View
         {
             if(StockManager.Instance.AddOrUpdateStock(_ornamentStock))
             {
-                MessageBox.Show($"Stock Updated for {_ornamentStock.Ornament}",ProductInformation.ProductName,MessageBoxButton.OK,MessageBoxImage.Information);
+                MessageBox.Show($"Stock Updated for {_ornamentStock.Ornament}",ProductInformation.Instance.ProductName,MessageBoxButton.OK,MessageBoxImage.Information);
             }
             else
-                MessageBox.Show($"Unable to update for {_ornamentStock.Ornament}", ProductInformation.ProductName, MessageBoxButton.OK, MessageBoxImage.Information);
+                MessageBox.Show($"Unable to update for {_ornamentStock.Ornament}", ProductInformation.Instance.ProductName, MessageBoxButton.OK, MessageBoxImage.Information);
         }
 
         private void cmbOrnaments_SelectionChanged(object sender, SelectionChangedEventArgs e)

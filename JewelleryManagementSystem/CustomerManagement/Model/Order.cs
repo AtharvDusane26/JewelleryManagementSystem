@@ -237,11 +237,11 @@ namespace JewelleryManagementSystem.CustomerManagement.Model
         }
         public void RemoveJewellery(IJewellery jewellery)
         {
-            if (PurchasedJewelleries.Any(o => o.Ornament.Name == jewellery.Ornament.Name && o.Weight == jewellery.Weight && o.TotalAmount == o.TotalAmount))
+            if (PurchasedJewelleries.Any(o => o.Ornament.Name == jewellery.Ornament.Name && o.NetWeight == jewellery.NetWeight && o.TotalAmount == o.TotalAmount))
             {
                 if (IsCompleted)
                     return;
-                var jewellertToRemove = PurchasedJewelleries.Where(o => o.Ornament.Name == jewellery.Ornament.Name && o.Weight == jewellery.Weight && o.TotalAmount == o.TotalAmount).FirstOrDefault();
+                var jewellertToRemove = PurchasedJewelleries.Where(o => o.Ornament.Name == jewellery.Ornament.Name && o.NetWeight == jewellery.NetWeight && o.TotalAmount == o.TotalAmount).FirstOrDefault();
                 PurchasedJewelleries.Remove(jewellertToRemove);
                 OnPropertyChanged(nameof(PurchasedJewelleries));
                 OnPropertyChanged(nameof(PurchasedJewelleriesObservable));

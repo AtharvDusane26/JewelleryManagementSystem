@@ -60,11 +60,11 @@ namespace JewelleryManagementSystem.Settings.View
         {
             if(_instance.AddOrUpdateMetal(_metal))
             {
-                MessageBox.Show("Updated Metal List", ProductInformation.OwnerName, MessageBoxButton.OK, MessageBoxImage.Information);
+                MessageBox.Show("Updated Metal List", ProductInformation.Instance.OwnerName, MessageBoxButton.OK, MessageBoxImage.Information);
                 Build();
             }
             else
-                MessageBox.Show("Unable to update Metal List", ProductInformation.OwnerName, MessageBoxButton.OK, MessageBoxImage.Error);
+                MessageBox.Show("Unable to update Metal List", ProductInformation.Instance.OwnerName, MessageBoxButton.OK, MessageBoxImage.Error);
 
         }
     }
