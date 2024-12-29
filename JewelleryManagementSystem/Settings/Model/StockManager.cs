@@ -5,11 +5,13 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Runtime.Serialization;
 using System.Text;
 using System.Threading.Tasks;
 
 namespace JewelleryManagementSystem.Settings.Model
 {
+    [DataContract]
     public sealed class StockManager : CommonComponent
     {
         private static StockManager _instance;
@@ -28,6 +30,7 @@ namespace JewelleryManagementSystem.Settings.Model
                 return _instance;
             }
         }
+        [DataMember]
         public List<OrnamentStock> OrnamentStocks
         {
             get => _ornamentStock;

@@ -16,6 +16,7 @@ namespace JewelleryManagementSystem.RecieptManager
         string CustomerName { get; }
         List<IJewellery> PurchasedJewelleries { get; }
         float TotalAmount { get; }
+        float OldJewelleryAmount { get; }
         float RemainingAmount { get; }
         float DiscountGiven { get; }
         string OrderStatus { get; }
@@ -32,7 +33,7 @@ namespace JewelleryManagementSystem.RecieptManager
         private float _discountGiven = 0;
         private string _ownerSignature;
         private string _orderStatus;
-
+        private float _oldJewelleriesAmount = 0f;
         public Reciept(string customerName, string orderID, string customerID)
         {
             _receiptID = string.Concat(orderID, customerID);
@@ -63,6 +64,12 @@ namespace JewelleryManagementSystem.RecieptManager
             set => _totalAmount = value;
         }
         [DataMember]
+        public float OldJewelleryAmount
+        {
+            get => _oldJewelleriesAmount;
+            set => _oldJewelleriesAmount = value;
+        }
+        [DataMember]
         public float DiscountGiven
         {
             get => _discountGiven;
@@ -73,7 +80,7 @@ namespace JewelleryManagementSystem.RecieptManager
         {
             get => _remainingAmount;
             set => _remainingAmount = value;
-        }
+        }        
         [DataMember]
         public string OrderStatus
         {
@@ -92,7 +99,7 @@ namespace JewelleryManagementSystem.RecieptManager
             html.AppendLine("<html>");
             html.AppendLine("<head>");
             html.AppendLine("<style>");
-          //  html.AppendLine("@page { size: A4; margin: 20mm; }"); // Sets the page size to A4 with margins
+            //  html.AppendLine("@page { size: A4; margin: 20mm; }"); // Sets the page size to A4 with margins
             html.AppendLine("body { font-family: Arial, sans-serif; margin: 0; padding: 0; }");
             html.AppendLine(".receipt { width: 100%; box-sizing: border-box; margin: auto; border: 2px solid darkorange; padding: 20px; }");
             html.AppendLine(".header { text-align: center; font-size: 30px; font-weight: bold; margin-bottom: 10px;  color: darkorange; padding: 10px; }");
@@ -132,24 +139,30 @@ namespace JewelleryManagementSystem.RecieptManager
             html.AppendLine("</tr>");
             foreach (var jewellery in receipt.PurchasedJewelleries)
             {
-                html.AppendLine("<tr>");
-                html.AppendLine($"<td>{jewellery.Ornament.Name}</td>");
-                html.AppendLine($"<td>{jewellery.GrossWeight}</td>");
-                html.AppendLine($"<td>{jewellery.NetWeight}</td>");
-                html.AppendLine($"<td>{jewellery.MakingChargesPerGram}</td>");
-                html.AppendLine("</tr>");
+                if (jewellery is INewJewellery)
+                {
+                    html.AppendLine("<tr>");
+                    html.AppendLine($"<td>{(jewellery as INewJewellery).Ornament.Name}</td>");
+                    html.AppendLine($"<td>{(jewellery as INewJewellery).GrossWeight}</td>");
+                    html.AppendLine($"<td>{jewellery.NetWeight}</td>");
+                    html.AppendLine($"<td>{(jewellery as INewJewellery).MakingChargesPerGram}</td>");
+                    html.AppendLine("</tr>");
+                }
             }
             html.AppendLine("</table>");
 
             // Summary Section
             html.AppendLine("<div class='summary'>");
             html.AppendLine("<table>");
-            html.AppendLine("<tr><td>TOTAL:</td><td style='text-align:right;'>" + $"Rs. {receipt.TotalAmount}</td></tr>");
-            html.AppendLine("<tr><td>Paid Amount:</td><td style='text-align:right;'>" + $"Rs. {receipt.TotalAmount - receipt.RemainingAmount - receipt.DiscountGiven}</td></tr>");
+            html.AppendLine("<tr><td>TOTAL(GST inc.):</td><td style='text-align:right;'>" + $"Rs. {receipt.TotalAmount}</td></tr>");
+            html.AppendLine("<tr><td>Paid Amount:</td><td style='text-align:right;'>" + $"Rs. {receipt.TotalAmount - receipt.RemainingAmount - receipt.DiscountGiven - receipt.OldJewelleryAmount}</td></tr>");
+            if (receipt.OldJewelleryAmount != 0)
+                html.AppendLine("<tr><td>Old Jewelleries Amount:</td><td style='text-align:right;'>" + $"Rs. {receipt.OldJewelleryAmount}</td></tr>");
             if (receipt.DiscountGiven != 0)
                 html.AppendLine("<tr><td>Discount of :</td><td style='text-align:right;'>" + $"Rs. {receipt.DiscountGiven}</td></tr>");
             if (receipt.RemainingAmount != 0)
                 html.AppendLine("<tr><td>Remaining Amount:</td><td style='text-align:right;'>" + $"Rs. {receipt.RemainingAmount}</td></tr>");
+
             html.AppendLine("</table>");
             html.AppendLine("</div>");
 

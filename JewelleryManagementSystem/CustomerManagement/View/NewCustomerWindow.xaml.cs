@@ -72,7 +72,7 @@ namespace JewelleryManagementSystem.CustomerManagement.View
                     if (order.IsCompleted)
                         return;
                     _customerManager.OrderManager.Order = order;
-                    var newOrderWindow = new NewOrderWindow(_customerManager.OrderManager , Update);
+                    var newOrderWindow = new NewOrderWindow(_customerManager.OrderManager, Update);
                     newOrderWindow.Owner = this;
                     newOrderWindow.btnAddOrder.IsEnabled = !_customerManager.OrderManager.Order.IsCompleted;
                     newOrderWindow.btnAddOrder.Content = "Update";
@@ -137,6 +137,7 @@ namespace JewelleryManagementSystem.CustomerManagement.View
                     RemainingAmount = order.RemainingAmount,
                     DiscountGiven = order.DiscountGiven,
                     OrderStatus = order.OrderStatus,
+                    OldJewelleryAmount = order.OldJewelleriesAmount,
                 };
                 var window = new RecieptWindow(reciept);
                 window.Title = ProductInformation.Instance.ShopName;

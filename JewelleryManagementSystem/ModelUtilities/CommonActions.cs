@@ -19,11 +19,7 @@ namespace JewelleryManagementSystem.ModelUtilities
     [DataContract]
     public class CommonComponent : CommonActions, ICommonComponent
     {
-        public event PropertyChangedEventHandler? PropertyChanged;
-        protected void ShowMessageBox(String message)
-        {
-            OnShowMessageBox?.Invoke(message);
-        }
+        public event PropertyChangedEventHandler? PropertyChanged;       
         protected void OnPropertyChanged([CallerMemberName] string name = null)
         {
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(name));

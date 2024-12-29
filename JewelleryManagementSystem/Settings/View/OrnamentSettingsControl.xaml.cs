@@ -33,7 +33,7 @@ namespace JewelleryManagementSystem.Settings.View
         {
             _instance = OrnamentManager.Instance;
             cmbEnumMakingWeightType.ItemsSource = Enum.GetValues<WeightType>();
-            cmbMetalList.ItemsSource = MetalManager.Instance.AvailableMetals;
+            cmbMetalList.ItemsSource = MetalManager.Instance.AvailableMetals.Where(o => o is INewMetal).ToList();
             cmbOrnamentList.ItemsSource = _instance.AvailableOrnaments;
 
         }

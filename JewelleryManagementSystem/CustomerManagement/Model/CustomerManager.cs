@@ -90,7 +90,7 @@ namespace JewelleryManagementSystem.CustomerManagement.Model
             }
             catch (Exception ex)
             {
-                ShowMessageBox("Unable to Load Order List");
+                OnShowMessageBox?.Invoke("Unable to Load Order List");
                 return null;
             }
         }

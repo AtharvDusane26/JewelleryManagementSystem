@@ -18,6 +18,7 @@ namespace JewelleryManagementSystem
         private string _address = "Test";
         private string _phoneNumber = "1234567890";
         private string _password = "Test";
+        private IGST _gSTInformation;
         private readonly string _filePath = Path.Combine(DirectoryPath.ProductDirectory, "ProductInformation.xml");
         public ProductInformation()
         {
@@ -29,6 +30,13 @@ namespace JewelleryManagementSystem
                 GeneralSettings.Default.Save();
             }
             ReadProductInformation();
+            GSTInformation = new GST();
+        }
+        [DataMember]
+        public IGST GSTInformation
+        {
+            get => _gSTInformation;
+            set => _gSTInformation = value;
         }
         [IgnoreDataMember]
         public static ProductInformation Instance

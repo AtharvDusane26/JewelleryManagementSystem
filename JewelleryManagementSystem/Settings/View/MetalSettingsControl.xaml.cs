@@ -47,17 +47,22 @@ namespace JewelleryManagementSystem.Settings.View
                 var metal = _instance.AvailableMetals.Where(o => o.MetalID == selectedMetal.MetalID). FirstOrDefault();
                 if(metal != null)
                     DataContext = _metal = metal.Clone();
+                if(selectedMetal is INewMetal)
+                    chkNewMetal.IsChecked = true;
+                else chkNewMetal.IsChecked = false;
+
             }
         }
 
         private void btnClear_Click(object sender, RoutedEventArgs e)
         {
             cmbMetalList.SelectedIndex = -1;
-            DataContext = _metal = _instance.GetNewMetal();           
+            var isNewMetal = chkNewMetal.IsChecked.Value;
+            DataContext = _metal = _instance.GetNewMetal(isNewMetal);          
         }
 
         private void btnUpdate_Click(object sender, RoutedEventArgs e)
-        {
+        {        
             if(_instance.AddOrUpdateMetal(_metal))
             {
                 MessageBox.Show("Updated Metal List", ProductInformation.Instance.OwnerName, MessageBoxButton.OK, MessageBoxImage.Information);

@@ -41,6 +41,8 @@
 
                 <Button x:Name="btnAddJewellery" Grid.Row="5" Grid.Column="0" Content="Add"></Button>
                 <Button x:Name="btnRemoveJewellery" Grid.Row="5" Grid.Column="1" Content="Remove" HorizontalAlignment="Left" Visibility="Collapsed"></Button>
+                <Button x:Name="btnAddOldJewellery" Grid.Row="5" Grid.Column="1" Content="Old Jewellery" HorizontalAlignment="Left" Margin="2,0,0,0" Click="btnAddOldJewellery_Click"></Button>
+
             </Grid>
         </GroupBox>
     </Grid>

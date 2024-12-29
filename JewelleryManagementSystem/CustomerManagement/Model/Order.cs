@@ -20,7 +20,9 @@ namespace JewelleryManagementSystem.CustomerManagement.Model
         string OrderID { get; }
         string CustomerID { get; }
         float TotalAmount { get; }
+        float OldJewelleriesAmount { get; }
         float PaidAmount { get; }
+        float GstAmount {  get; }
         List<float> PaidAmountInstallments { get; }
         float RemainingAmount { get; }
         float DiscountGiven { get; }
@@ -122,6 +124,16 @@ namespace JewelleryManagementSystem.CustomerManagement.Model
         {
             get => GetTotalAmount();
         }
+        [IgnoreDataMember]  
+        public float GstAmount
+        {
+            get => GetGstAmount();
+        }      
+        [IgnoreDataMember]
+        public float OldJewelleriesAmount
+        {
+            get => GetPurchasedJewelleriesAmount();
+        }
         [DataMember]
         public List<float> PaidAmountInstallments
         {
@@ -154,7 +166,7 @@ namespace JewelleryManagementSystem.CustomerManagement.Model
             {
                 if (PaidAmountInstallments != null)
                 {
-                    return TotalAmount - PaidAmountInstallments.Sum() - DiscountGiven;
+                    return TotalAmount - PaidAmountInstallments.Sum() - DiscountGiven - OldJewelleriesAmount;
                 }
                 return 0;
             }
@@ -235,31 +247,72 @@ namespace JewelleryManagementSystem.CustomerManagement.Model
             OnPropertyChanged(nameof(RemainingAmount));
 
         }
-        public void RemoveJewellery(IJewellery jewellery)
+        public void RemoveJewellery(IJewellery newJewellery)
         {
-            if (PurchasedJewelleries.Any(o => o.Ornament.Name == jewellery.Ornament.Name && o.NetWeight == jewellery.NetWeight && o.TotalAmount == o.TotalAmount))
+            if (newJewellery is INewJewellery jewellery)
             {
-                if (IsCompleted)
-                    return;
-                var jewellertToRemove = PurchasedJewelleries.Where(o => o.Ornament.Name == jewellery.Ornament.Name && o.NetWeight == jewellery.NetWeight && o.TotalAmount == o.TotalAmount).FirstOrDefault();
-                PurchasedJewelleries.Remove(jewellertToRemove);
-                OnPropertyChanged(nameof(PurchasedJewelleries));
-                OnPropertyChanged(nameof(PurchasedJewelleriesObservable));
-                OnPropertyChanged(nameof(TotalAmount));
-                OnPropertyChanged(nameof(RemainingAmount));
+                if (PurchasedJewelleries.Any(o => (o as INewJewellery).Ornament.Name == jewellery.Ornament.Name && o.NetWeight == jewellery.NetWeight && o.TotalAmount == o.TotalAmount))
+                {
+                    if (IsCompleted)
+                        return;
+                    var jewellertToRemove = PurchasedJewelleries.Where(o => (o as INewJewellery).Ornament.Name == jewellery.Ornament.Name && o.NetWeight == jewellery.NetWeight && o.TotalAmount == o.TotalAmount).FirstOrDefault();
+                    PurchasedJewelleries.Remove(jewellertToRemove);
+                    OnPropertyChanged(nameof(PurchasedJewelleries));
+                    OnPropertyChanged(nameof(PurchasedJewelleriesObservable));
+                    OnPropertyChanged(nameof(TotalAmount));
+                    OnPropertyChanged(nameof(RemainingAmount));
+                }
             }
+        }
+        private float GetGstAmount()
+        {
+            float gstAmount = 0f;
+            foreach(var item in PurchasedJewelleries)
+            {
+                if(item is INewJewellery newJwl)
+                {
+                    gstAmount += ProductInformation.Instance.GSTInformation.GetGSTAmount(newJwl.NetAmount);
+                }
+            }
+            return gstAmount;
+        }
+        public float GetPurchasedJewelleriesAmount()
+        {
+            float amount = 0;
+            if (PurchasedJewelleries != null)
+            {
+                foreach (var item in PurchasedJewelleries)
+                {
+                    if (item is IOldJewellery)
+                    {
+                        amount += item.TotalAmount;
+                    }
+                }
+            }
+            return amount;
         }
         public float GetTotalAmount()
         {
-            return PurchasedJewelleries != null ? PurchasedJewelleries.Sum(o => o.TotalAmount) : 0;
+            float totalAmount = 0;
+            if (PurchasedJewelleries != null)
+            {
+                foreach (var item in PurchasedJewelleries)
+                {
+                    if (item is INewJewellery)
+                    {
+                        totalAmount += item.TotalAmount;
+                    }                 
+                }
+            }
+            return totalAmount;
         }
         public void UpdateStock()
         {
             if (IsCompleted)
             {
-                foreach (var item in PurchasedJewelleries)
+                foreach (var item in PurchasedJewelleries.Where(o => o is INewJewellery).ToList())
                 {
-                    var stock = StockManager.Instance.OrnamentStocks.Where(o => o.Ornament == item.Ornament.ToString()).FirstOrDefault();
+                    var stock = StockManager.Instance.OrnamentStocks.Where(o => o.Ornament == (item as INewJewellery).Ornament.ToString()).FirstOrDefault();
                     if (stock != null)
                     {
                         stock.AvailableStock -= 1;
@@ -267,7 +320,7 @@ namespace JewelleryManagementSystem.CustomerManagement.Model
                     }
                 }
 
-            }           
+            }
         }
         public override string ToString()
         {

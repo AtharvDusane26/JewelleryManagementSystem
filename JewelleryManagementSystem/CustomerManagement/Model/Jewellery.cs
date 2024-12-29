@@ -11,20 +11,26 @@ namespace JewelleryManagementSystem.CustomerManagement.Model
 {
     public interface IJewellery
     {
-        Ornament Ornament { get; set; }
         float NetWeight { get; }
-        float GrossWeight {  get; } 
         WeightType SelectedWeightType { get; }
         float TotalAmount { get; }
+    }
+    public interface INewJewellery : IJewellery
+    {
+        Ornament Ornament { get; set; }
+        float GrossWeight { get; }
         string MakingChargesPerGram { get; }
+        float NetAmount { get; }
     }
     [DataContract]
-    public class Jewellery : CommonComponent, IJewellery
+    public class Jewellery : CommonComponent, INewJewellery
     {
         private Ornament _ornament;
         private float _totalAmount;
         private float _netWeight = 0f;
         private float _grossWeight = 0f;
+        private float _netAmount = 0f;
+
         [DataMember]
         public Ornament Ornament
         {
@@ -71,6 +77,17 @@ namespace JewelleryManagementSystem.CustomerManagement.Model
                 OnPropertyChanged(nameof(TotalAmount));
             }
         }
+        [DataMember]    
+        public float NetAmount
+        {
+            get => _netAmount;
+            private set
+            {
+                if(_netAmount == value) return;
+                _netAmount = value;
+                OnPropertyChanged(nameof(NetAmount));
+            }
+        }
         [IgnoreDataMember]
         public WeightType SelectedWeightType => WeightType.InGram;
         [IgnoreDataMember]
@@ -86,7 +103,7 @@ namespace JewelleryManagementSystem.CustomerManagement.Model
                     }
                     else
                     {
-                        return $"{GetRatePerGram(Ornament.MakingCharges.Value, Ornament.MakingChargeType.Value)} Rs. per gram";
+                        return $"{Utilities.GetRatePerGram(Ornament.MakingCharges.Value, Ornament.MakingChargeType.Value)} Rs. per gram";
                     }
                 }
                 return "0";
@@ -96,35 +113,22 @@ namespace JewelleryManagementSystem.CustomerManagement.Model
         {
             if (Ornament != null && NetWeight != 0 && SelectedWeightType != null)
             {
-                var metalRateInGram = GetRatePerGram(Ornament.Metal.MetalRate, Ornament.Metal.WeightTypeForRate);
-                var weightInGram = GetRatePerGram(NetWeight, SelectedWeightType);
+                var metalRateInGram = Utilities.GetRatePerGram(Ornament.Metal.MetalRate, Ornament.Metal.WeightTypeForRate);
+                var weightInGram = Utilities.GetRatePerGram(NetWeight, SelectedWeightType);
                 if (Ornament.MakingChargeType == WeightType.LumSumForMakingOnly)
                 {
                     TotalAmount = (metalRateInGram * weightInGram) + Ornament.MakingCharges.Value;
+                    NetAmount = (metalRateInGram * weightInGram);
                 }
                 else
                 {
-                    var makingChagesInGram = GetRatePerGram(Ornament.MakingCharges.Value, Ornament.MakingChargeType.Value);
+                    var makingChagesInGram = Utilities.GetRatePerGram(Ornament.MakingCharges.Value, Ornament.MakingChargeType.Value);
                     TotalAmount = (metalRateInGram + makingChagesInGram) * weightInGram;
+                    NetAmount = (metalRateInGram * weightInGram);
                 }
             }
         }
-        private float GetRatePerGram(float rate, WeightType weightType)
-        {
-            switch (weightType)
-            {
-                case WeightType.InMiliGram:
-                    return rate * 1000;
-                case WeightType.InGram:
-                    return rate;
-                case WeightType.InTenGram:
-                    return rate / 10;
-                case WeightType.InKiloGram:
-                    return rate / 1000;
-                default:
-                    return 0;
-            }
-        }
+       
         public override string ToString()
         {
             return Ornament?.Name;
@@ -132,7 +136,7 @@ namespace JewelleryManagementSystem.CustomerManagement.Model
         public override bool Equals(object? obj)
         {
             if (ReferenceEquals(null, obj)) return false;
-            var jewelleryObj = obj as IJewellery;
+            var jewelleryObj = obj as INewJewellery;
             if (jewelleryObj == null) return false;
             if(jewelleryObj.Ornament.ToString() == Ornament?.ToString() && jewelleryObj.NetWeight == NetWeight && jewelleryObj.TotalAmount == TotalAmount) return true;
             return false;

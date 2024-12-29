@@ -38,9 +38,10 @@ namespace JewelleryManagementSystem.CustomerManagement.View
             Build();
             Closing += (o, e) =>
             {
-                if(_order != null && _order.IsCompleted)
+                if (_order != null && _order.IsCompleted)
                     _order.UpdateStock();
             };
+            jewelleryControl.OrderManager = _orderManager;
         }
         private void Build()
         {
@@ -63,7 +64,7 @@ namespace JewelleryManagementSystem.CustomerManagement.View
                         return;
                     }
                     _jewellery = new Jewellery();
-                    _jewellery.Ornament = selectedOrnament.Clone();
+                    (_jewellery as INewJewellery).Ornament = selectedOrnament.Clone();
                     jewelleryControl.DataContext = _jewellery;
                     if (_jewellery is CommonComponent component)
                         component.OnAllPropertyChanged();
@@ -95,7 +96,7 @@ namespace JewelleryManagementSystem.CustomerManagement.View
                 _jewellery = grid.SelectedItem as IJewellery;
                 if (_jewellery != null)
                 {
-                    jewelleryControl.cmbJewellery.SelectedItem = _orderManager.OrnamentManager.AvailableOrnaments.Where(o => o.Equals(_jewellery.Ornament)).FirstOrDefault();
+                    jewelleryControl.cmbJewellery.SelectedItem = _orderManager.OrnamentManager.AvailableOrnaments.Where(o => o.Equals((_jewellery as INewJewellery).Ornament)).FirstOrDefault();
                 }
             }
         }
@@ -123,7 +124,7 @@ namespace JewelleryManagementSystem.CustomerManagement.View
             if (result == MessageBoxResult.Yes)
             {
                 if (_orderManager.AddOrUpdateOrder())
-                {                 
+                {
                     MessageBox.Show("Order Confirmed", ProductInformation.Instance.ShopName, MessageBoxButton.OK, MessageBoxImage.Information);
                     UpdateCustomer?.Invoke();
                 }
@@ -141,21 +142,42 @@ namespace JewelleryManagementSystem.CustomerManagement.View
                 {
                     if (_order.IsCompleted)
                         return;
-                    var window = new Window();
-                    var content = new AddJewelleryControl(_jewellery, RemoveJewellery);
-                    window.Content = content;
-                    window.Owner = this;
-                    window.Title = ProductInformation.Instance .ShopName;
-                    window.ResizeMode = ResizeMode.NoResize;
-                    window.MaxHeight = 200;
-                    window.MaxWidth = 300;
-                    window.WindowStartupLocation = WindowStartupLocation.CenterOwner;
-                    window.Closing += (o, e) =>
+                    if (_jewellery is INewJewellery newJewellery)
                     {
-                        if (_orderManager.Order is CommonComponent component)
-                            component.OnAllPropertyChanged();
-                    };
-                    window.ShowDialog();
+                        var window = new Window();
+                        var content = new AddJewelleryControl(newJewellery, _orderManager, RemoveJewellery);
+                        window.Content = content;
+                        window.Owner = this;
+                        window.Title = ProductInformation.Instance.ShopName;
+                        window.ResizeMode = ResizeMode.NoResize;
+                        window.MaxHeight = 220;
+                        window.MaxWidth = 300;
+                        window.WindowStartupLocation = WindowStartupLocation.CenterOwner;
+                        window.Closing += (o, e) =>
+                        {
+                            if (_orderManager.Order is CommonComponent component)
+                                component.OnAllPropertyChanged();
+                        };
+                        window.ShowDialog();
+                    }
+                    else if (_jewellery is IOldJewellery oldJewellery)
+                    {
+                        var window = new Window();                       
+                        var content = new OldJewelleryControl(oldJewellery,_orderManager, RemoveJewellery);
+                        window.Content = content;
+                        window.Owner = this;
+                        window.Title = ProductInformation.Instance.ShopName;
+                        window.ResizeMode = ResizeMode.NoResize;
+                        window.MaxHeight = 220;
+                        window.MaxWidth = 300;
+                        window.WindowStartupLocation = WindowStartupLocation.CenterOwner;
+                        window.Closing += (o, e) =>
+                        {
+                            if (_orderManager.Order is CommonComponent component)
+                                component.OnAllPropertyChanged();
+                        };
+                        window.ShowDialog();
+                    }
                 }
             }
         }

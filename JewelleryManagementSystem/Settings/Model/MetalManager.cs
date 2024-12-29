@@ -40,13 +40,17 @@ namespace JewelleryManagementSystem.Settings.Model
             AvailableMetals.Add(metal);
             SaveMetalList();
             var ornaments = OrnamentManager.Instance.AvailableOrnaments.Where(o => o.Metal.MetalID == metal.MetalID).ToList();
-            if(ornaments != null)
+            if (ornaments != null)
                 ornaments.ForEach(o => o.Metal = metal);
             return true;
         }
-        public IMetal GetNewMetal()
+        public IMetal GetNewMetal(bool isNew = true)
         {
-            return new Metal();
+            if (isNew)
+                return new Metal();
+            else
+                return new OldMetal();
+
         }
         private void SaveMetalList()
         {

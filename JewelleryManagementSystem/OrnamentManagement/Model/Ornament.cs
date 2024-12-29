@@ -94,8 +94,8 @@ namespace JewelleryManagementSystem.OrnamentManagement.Model
             if(Metal == null) return;
             if (IsMakingUpdateFromMetal)
             {
-                MakingChargeType = Metal.WeightTypeForMaking;
-                MakingCharges = Metal.MakingCharges;
+                MakingChargeType = (Metal as INewMetal).WeightTypeForMaking;
+                MakingCharges = (Metal as INewMetal).MakingCharges;
             }
             else
             {
