@@ -57,29 +57,29 @@
 
                 <!-- Order Information Section -->
                 <TextBlock Grid.Row="0" Grid.Column="0" Text="Order ID:" FontWeight="Bold"/>
-                <TextBox Grid.Row="0" Grid.Column="1" Text="{Binding OrderID , Mode=OneWay}" HorizontalAlignment="Left" IsReadOnly="True" Margin="5"/>
+                <TextBox Grid.Row="0" Grid.Column="1" Text="{Binding OrderID , Mode=OneWay}" Height="30" Width="120" HorizontalAlignment="Left" IsReadOnly="True" Margin="5"/>
 
                 <TextBlock Grid.Row="1" Grid.Column="0" Text="Order Status:" FontWeight="Bold"/>
-                <TextBox Grid.Row="1" Grid.Column="1" Text="{Binding OrderStatus, Mode=OneWay}" HorizontalAlignment="Left" IsReadOnly="True" Margin="5"/>
+                <TextBox Grid.Row="1" Grid.Column="1" Text="{Binding OrderStatus, Mode=OneWay}" Height="30" Width="120" HorizontalAlignment="Left" IsReadOnly="True" Margin="5"/>
 
                 <TextBlock Grid.Row="2" Grid.Column="0" Text="Total Amount:" FontWeight="Bold"/>
-                <TextBox Grid.Row="2" Grid.Column="1" Text="{Binding TotalAmount , Mode=OneWay}" HorizontalAlignment="Left" IsReadOnly="True" Margin="5"/>
+                <TextBox Grid.Row="2" Grid.Column="1" Text="{Binding TotalAmount , Mode=OneWay}" Height="30" Width="120" HorizontalAlignment="Left" IsReadOnly="True" Margin="5"/>
 
                 <TextBlock Grid.Row="3" Grid.Column="0" Text="Paid Amount:" FontWeight="Bold"/>
                 <StackPanel Orientation="Horizontal" Grid.Row="3" Grid.Column="1">
-                    <TextBox x:Name="txtPaidAmount" Text="{Binding PaidAmount}" Width="100" Margin="5"/>
+                    <TextBox x:Name="txtPaidAmount" Text="{Binding PaidAmount}" Height="30" Width="120" Margin="5"/>
                     <Button x:Name="btnUpdatePaid" Content="*" Height="25" Width="30" Margin="2"  Click="btnUpdatePaid_Click"></Button>
                     <CheckBox Content="Mark as Complete" IsChecked="{Binding IsCompleted}" VerticalAlignment="Center"></CheckBox>
                 </StackPanel>
 
                 <TextBlock Grid.Row="4" Grid.Column="0" Text="Mod Amount:" FontWeight="Bold"/>
-                <TextBox Grid.Row="4" Grid.Column="1" Text="{Binding OldJewelleriesAmount , Mode=OneWay}" IsReadOnly="True" HorizontalAlignment="Left" Margin="5"/>
+                <TextBox Grid.Row="4" Grid.Column="1" Text="{Binding OldJewelleriesAmount , Mode=OneWay}" IsReadOnly="True" Height="30" Width="120" HorizontalAlignment="Left" Margin="5"/>
                 
                 <TextBlock Grid.Row="5" Grid.Column="0" Text="Discount Given:" FontWeight="Bold"/>
-                <TextBox Grid.Row="5" Grid.Column="1" Text="{Binding DiscountGiven}" HorizontalAlignment="Left" Margin="5"/>
+                <TextBox Grid.Row="5" Grid.Column="1" Text="{Binding DiscountGiven}" HorizontalAlignment="Left" Height="30" Width="120" Margin="5"/>
 
                 <TextBlock Grid.Row="6" Grid.Column="0" Text="Remaining Amount:" FontWeight="Bold"/>
-                <TextBox Grid.Row="6" Grid.Column="1" Text="{Binding RemainingAmount , Mode=OneWay}" HorizontalAlignment="Left" IsReadOnly="True" Margin="5"/>
+                <TextBox Grid.Row="6" Grid.Column="1" Text="{Binding RemainingAmount , Mode=OneWay}" HorizontalAlignment="Left" Height="30" Width="120" IsReadOnly="True" Margin="5"/>
 
                 <!-- Jewellries List Section -->
                 <TextBlock Grid.Row="7" Grid.Column="0" Text="Purchased Jewelleries" FontWeight="Bold"/>

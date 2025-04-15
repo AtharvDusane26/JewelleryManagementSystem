@@ -12,8 +12,8 @@
             <RowDefinition Height="9.5*"></RowDefinition>
         </Grid.RowDefinitions>
         <StackPanel Orientation="Horizontal">
-            <Button x:Name="_btnNewCustomer" Content="New Customer" Click="btnNewCustomer_Click" Margin="1"></Button>
-            <Button x:Name="_btnSettings" Content="Settings" Click="_btnSettings_Click" Margin="1"></Button>
+            <Button x:Name="_btnNewCustomer" Content="New Customer"  Click="btnNewCustomer_Click" Margin="5"></Button>
+            <Button x:Name="_btnSettings" Content="Settings" Click="_btnSettings_Click" Margin="5"></Button>
         </StackPanel>
         <DataGrid Grid.Row="1" Background="#2C2C2C" ItemsSource="{Binding CustomerList}" AutoGenerateColumns="False" MouseDoubleClick="DataGrid_MouseDoubleClick">
             <DataGrid.Columns>

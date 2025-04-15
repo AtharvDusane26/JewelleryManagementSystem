@@ -60,7 +60,7 @@ namespace JewelleryManagementSystem.CustomerManagement.View
             window.Title = ProductInformation.Instance.ShopName;
             window.ResizeMode = ResizeMode.NoResize;
             window.MaxHeight = 220;
-            window.MaxWidth = 300;
+            window.MaxWidth = 350;
             window.WindowStartupLocation = WindowStartupLocation.CenterOwner;
             window.Closing += (o, e) =>
             {
