@@ -14,6 +14,7 @@ namespace JewelleryManagementSystem.CustomerManagement.Model
 {
     public interface IOrder
     {
+        bool? GSTOrderBillCreated { get; set; }
         IOrderCustomer Customer { get; }
         bool IsCompleted { get; set; }
         string OrderStatus { get; }
@@ -22,7 +23,7 @@ namespace JewelleryManagementSystem.CustomerManagement.Model
         float TotalAmount { get; }
         float OldJewelleriesAmount { get; }
         float PaidAmount { get; }
-        float GstAmount {  get; }
+        float GstAmount { get; }
         List<float> PaidAmountInstallments { get; }
         float RemainingAmount { get; }
         float DiscountGiven { get; }
@@ -42,7 +43,6 @@ namespace JewelleryManagementSystem.CustomerManagement.Model
         private bool _isCompleted;
         private string _orderID;
         private string _orderStatus;
-        private float _totalAmount;
         private List<float> _paidAmountInstallments;
         private List<IJewellery> _purchasedJewelleries;
         private DateTime _orderPlacedDate = DateTime.Now;
@@ -51,6 +51,7 @@ namespace JewelleryManagementSystem.CustomerManagement.Model
         private float _paidAmount = 0;
         private float _discountGiven = 0;
         private string _customerId;
+        private bool? _gSTBillCreated = null;
         public Order(ICustomer customer)
         {
             Customer = customer as IOrderCustomer;
@@ -62,6 +63,19 @@ namespace JewelleryManagementSystem.CustomerManagement.Model
         }
         [IgnoreDataMember]
         public IOrderCustomer Customer { get; private set; }
+        [DataMember]
+        public bool? GSTOrderBillCreated
+        {
+            get => _gSTBillCreated;
+            set
+            {
+                if (_gSTBillCreated == value) return;
+                _gSTBillCreated = value;
+                OnPropertyChanged(nameof(GSTOrderBillCreated));
+                if (_gSTBillCreated == true)
+                    PaidAmount += GstAmount;
+            }
+        }
         [DataMember]
         public bool IsCompleted
         {
@@ -79,6 +93,7 @@ namespace JewelleryManagementSystem.CustomerManagement.Model
                 }
                 else
                     OrderStatus = "pending";
+                OnPropertyChanged(nameof(PaidAmount));
             }
         }
         [DataMember]
@@ -124,11 +139,11 @@ namespace JewelleryManagementSystem.CustomerManagement.Model
         {
             get => GetTotalAmount();
         }
-        [IgnoreDataMember]  
+        [IgnoreDataMember]
         public float GstAmount
         {
             get => GetGstAmount();
-        }      
+        }
         [IgnoreDataMember]
         public float OldJewelleriesAmount
         {
@@ -267,9 +282,9 @@ namespace JewelleryManagementSystem.CustomerManagement.Model
         private float GetGstAmount()
         {
             float gstAmount = 0f;
-            foreach(var item in PurchasedJewelleries)
+            foreach (var item in PurchasedJewelleries)
             {
-                if(item is INewJewellery newJwl)
+                if (item is INewJewellery newJwl)
                 {
                     gstAmount += ProductInformation.Instance.GSTInformation.GetGSTAmount(newJwl.NetAmount);
                 }
@@ -301,7 +316,7 @@ namespace JewelleryManagementSystem.CustomerManagement.Model
                     if (item is INewJewellery)
                     {
                         totalAmount += item.TotalAmount;
-                    }                 
+                    }
                 }
             }
             return totalAmount;

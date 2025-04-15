@@ -1,4 +1,5 @@
 ﻿using JewelleryManagementSystem.OrnamentManagement.Model;
+using JewelleryManagementSystem.OrnamentManagement.Model;
 using System;
 using System.Collections.Generic;
 using System.Linq;

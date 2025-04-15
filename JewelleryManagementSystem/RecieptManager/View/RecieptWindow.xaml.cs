@@ -25,7 +25,10 @@ namespace JewelleryManagementSystem.RecieptManager.View
         {
             InitializeComponent();
             _reciept = reciept;
-            webControl.NavigateToString(RecieptGenerator.CreateReciept(reciept));
+            if (reciept is IGSTReciept gSTReciept)
+                webControl.NavigateToString(RecieptGenerator.CreateGSTReciept(gSTReciept));
+            else
+                webControl.NavigateToString(RecieptGenerator.CreateReciept(reciept));
         }
 
         private void btnPrintPdf_Click(object sender, RoutedEventArgs e)
@@ -35,8 +38,8 @@ namespace JewelleryManagementSystem.RecieptManager.View
         private void CreateReciept()
         {
             var grid = webControl;
-            var filePath = System.IO.Path.Combine(GeneralSettings.Default.BaseDirectory, $"{_reciept.CustomerName}{_reciept.ReceiptID}.png"); 
-            if(File.Exists(filePath))
+            var filePath = System.IO.Path.Combine(GeneralSettings.Default.BaseDirectory, $"{_reciept.CustomerName}{_reciept.ReceiptID}.png");
+            if (File.Exists(filePath))
                 File.Delete(filePath);
             // Measure and arrange the grid
             grid.Measure(new Size(double.PositiveInfinity, double.PositiveInfinity));
