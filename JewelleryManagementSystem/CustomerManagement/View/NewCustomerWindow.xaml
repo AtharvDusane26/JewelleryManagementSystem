@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:JewelleryManagementSystem.CustomerManagement.View"
         mc:Ignorable="d" WindowStartupLocation="CenterOwner"
-     Height="700" Width="1000" ResizeMode="NoResize" Background="#f1d9fa" ShowInTaskbar="False">
+     Height="700" Width="1000" ResizeMode="NoResize" Background="#2C2C2C" ShowInTaskbar="False">
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="auto"></RowDefinition>
@@ -32,19 +32,19 @@
                     <ColumnDefinition></ColumnDefinition>
                 </Grid.ColumnDefinitions>
                 <Label Content="Customer ID" Grid.Row="0" Grid.Column="0" Margin="2"></Label>
-                <TextBox Text="{Binding CustomerID, Mode=OneWay}"  HorizontalAlignment="Left" IsReadOnly="True" Grid.Row="0" Grid.Column="1"></TextBox>
+                <TextBox Text="{Binding CustomerID, Mode=OneWay}"  Height="30" Width="160" Margin="2"  HorizontalAlignment="Left" IsReadOnly="True" Grid.Row="0" Grid.Column="1"></TextBox>
 
                 <Label Content="Customer Name" Grid.Row="0" Grid.Column="2" Margin="2"></Label>
-                <TextBox Text="{Binding CustomerName}" Grid.Row="0"  HorizontalAlignment="Left" Grid.Column="3" ></TextBox>
+                <TextBox Text="{Binding CustomerName}" Grid.Row="0" Height="30" Width="160" Margin="2"   HorizontalAlignment="Left" Grid.Column="3" ></TextBox>
 
                 <Label Content="Mobile Number" Grid.Row="1" Grid.Column="0" Margin="2"></Label>
-                <TextBox Text="{Binding CustomerPhoneNumber}"  HorizontalAlignment="Left" Grid.Row="1" Grid.Column="1" ></TextBox>
+                <TextBox Text="{Binding CustomerPhoneNumber}" Height="30" Width="160" Margin="2"   HorizontalAlignment="Left" Grid.Row="1" Grid.Column="1" ></TextBox>
 
                 <Label Content="Email Address" Grid.Row="1" Grid.Column="2" Margin="2"></Label>
-                <TextBox Text="{Binding CustomerEmail}"  HorizontalAlignment="Left" Grid.Row="1" Grid.Column="3"></TextBox>
+                <TextBox Text="{Binding CustomerEmail}" Height="30" Width="160" Margin="2"  HorizontalAlignment="Left" Grid.Row="1" Grid.Column="3"></TextBox>
 
                 <Label Content="Address" Grid.Row="2" Grid.Column="0" Margin="2"></Label>
-                <TextBox Text="{Binding CustomerAddress}"  HorizontalAlignment="Left" Grid.Row="2" Grid.Column="1"></TextBox>
+                <TextBox Text="{Binding CustomerAddress}" Height="30" Width="160" Margin="2"  HorizontalAlignment="Left" Grid.Row="2" Grid.Column="1"></TextBox>
             </Grid>
         </GroupBox>
        

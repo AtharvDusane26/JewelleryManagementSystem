@@ -7,7 +7,7 @@
              mc:Ignorable="d" 
              HorizontalAlignment="Left" VerticalAlignment="Top">
     <Grid>
-        <GroupBox x:Name="grpJewellery" Header="Add Jewellery" BorderBrush="Purple" BorderThickness="1">
+        <GroupBox x:Name="grpJewellery" Header="Add Jewellery" Background="#2C2C2C" BorderThickness="1">
             <Grid>
                 <Grid.RowDefinitions>
                     <RowDefinition Height="auto"></RowDefinition>

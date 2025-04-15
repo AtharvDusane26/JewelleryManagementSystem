@@ -8,14 +8,14 @@
             >
     <Grid>
         <Grid.RowDefinitions>
-            <RowDefinition Height="1*"></RowDefinition>
+            <RowDefinition Height="0.5*"></RowDefinition>
             <RowDefinition Height="9.5*"></RowDefinition>
         </Grid.RowDefinitions>
         <StackPanel Orientation="Horizontal">
             <Button x:Name="_btnNewCustomer" Content="New Customer" Click="btnNewCustomer_Click" Margin="1"></Button>
             <Button x:Name="_btnSettings" Content="Settings" Click="_btnSettings_Click" Margin="1"></Button>
         </StackPanel>
-        <DataGrid Grid.Row="1" Background="#f1d9fa" ItemsSource="{Binding CustomerList}" AutoGenerateColumns="False" MouseDoubleClick="DataGrid_MouseDoubleClick">
+        <DataGrid Grid.Row="1" Background="#2C2C2C" ItemsSource="{Binding CustomerList}" AutoGenerateColumns="False" MouseDoubleClick="DataGrid_MouseDoubleClick">
             <DataGrid.Columns>
                 <DataGridTextColumn Header="Customer Id" Binding="{Binding CustomerID}"></DataGridTextColumn>
                 <DataGridTextColumn Header="Customer Name" Binding="{Binding CustomerName}"></DataGridTextColumn>

@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:JewelleryManagementSystem.CustomerManagement.View"
         mc:Ignorable="d"  WindowStartupLocation="CenterOwner"
-        Height="400" Width="780" ResizeMode="NoResize" Background="#f1d9fa" ShowInTaskbar="False">
+        Height="400" Width="780" ResizeMode="NoResize" Background="#2C2C2C" ShowInTaskbar="False">
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="9*"></RowDefinition>

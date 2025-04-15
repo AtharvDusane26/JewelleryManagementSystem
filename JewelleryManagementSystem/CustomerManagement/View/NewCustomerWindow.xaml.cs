@@ -134,35 +134,37 @@ namespace JewelleryManagementSystem.CustomerManagement.View
                 {
                     IReciept reciept = null;
 
-                    var result = MessageBox.Show("Do you want to create GST Bill?", ProductInformation.Instance.ShopName, MessageBoxButton.YesNo, MessageBoxImage.Question);
-                    if (result == MessageBoxResult.Yes)
-                    {
-                        order.GSTOrderBillCreated = true;
-                        reciept = new GSTReciept(_customer.CustomerName, order.OrderID, _customer.CustomerID)
-                        {
-                            PurchasedJewelleries = order.PurchasedJewelleries,
-                            TotalAmount = order.TotalAmount,
-                            RemainingAmount = order.RemainingAmount,
-                            DiscountGiven = order.DiscountGiven,
-                            OrderStatus = order.OrderStatus,
-                            OldJewelleryAmount = order.OldJewelleriesAmount,
-                            GstAmount = order.GstAmount
-                        };
+                    //var result = MessageBox.Show("Do you want to create GST Bill?", ProductInformation.Instance.ShopName, MessageBoxButton.YesNo, MessageBoxImage.Question);
+                    //if (result == MessageBoxResult.None)
+                    //    return;
+                    //else if (result == MessageBoxResult.Yes)
+                    //{
+                    //    order.GSTOrderBillCreated = true;
+                    //    reciept = new GSTReciept(_customer.CustomerName, order.OrderID, _customer.CustomerID)
+                    //    {
+                    //        PurchasedJewelleries = order.PurchasedJewelleries,
+                    //        TotalAmount = order.TotalAmount,
+                    //        RemainingAmount = order.RemainingAmount,
+                    //        DiscountGiven = order.DiscountGiven,
+                    //        OrderStatus = order.OrderStatus,
+                    //        OldJewelleryAmount = order.OldJewelleriesAmount,
+                    //        GstAmount = order.GstAmount
+                    //    };
 
-                    }
-                    else if (result == MessageBoxResult.No)
+                    //}
+                    //else if (result == MessageBoxResult.No)
+                    //{
+                    order.GSTOrderBillCreated = false;
+                    reciept = new Reciept(_customer.CustomerName, order.OrderID, _customer.CustomerID)
                     {
-                        order.GSTOrderBillCreated = false;
-                        reciept = new Reciept(_customer.CustomerName, order.OrderID, _customer.CustomerID)
-                        {
-                            PurchasedJewelleries = order.PurchasedJewelleries,
-                            TotalAmount = order.TotalAmount,
-                            RemainingAmount = order.RemainingAmount,
-                            DiscountGiven = order.DiscountGiven,
-                            OrderStatus = order.OrderStatus,
-                            OldJewelleryAmount = order.OldJewelleriesAmount,
-                        };
-                    }
+                        PurchasedJewelleries = order.PurchasedJewelleries,
+                        TotalAmount = order.TotalAmount,
+                        RemainingAmount = order.RemainingAmount,
+                        DiscountGiven = order.DiscountGiven,
+                        OrderStatus = order.OrderStatus,
+                        OldJewelleryAmount = order.OldJewelleriesAmount,
+                    };
+                    //}
                     var window = new RecieptWindow(reciept);
                     window.Title = ProductInformation.Instance.ShopName;
                     window.Owner = this;

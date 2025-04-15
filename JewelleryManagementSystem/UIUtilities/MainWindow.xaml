@@ -4,7 +4,7 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:JewelleryManagementSystem"
-        mc:Ignorable="d"  WindowState="Maximized" MinHeight="750" MinWidth="1100" ResizeMode="CanResizeWithGrip" Background="#f1d9fa"
+        mc:Ignorable="d"  WindowState="Maximized" MinHeight="750" MinWidth="1100" ResizeMode="CanResizeWithGrip" Background="#2C2C2C"
        >
     <Grid>
       

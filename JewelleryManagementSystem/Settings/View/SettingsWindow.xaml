@@ -5,10 +5,10 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:JewelleryManagementSystem.Settings.View"
         mc:Ignorable="d"
-        WindowStartupLocation="CenterScreen" Background="#f1d9fa" Height="700" Width="1050" ResizeMode="CanMinimize"
+        WindowStartupLocation="CenterScreen" Background="#2C2C2C" Height="700" Width="1050" ResizeMode="CanMinimize"
         ShowInTaskbar="True">
     <Grid>
-        <TabControl x:Name="tabControl" Background="#f1d9fa">
+        <TabControl x:Name="tabControl" Background="#2C2C2C">
             <!--<TabItem x:Name="settingsTab" Height="30" Width="120" Header="Settings">
             </TabItem>-->
             <TabItem x:Name="metalTab" Height="30" Width="120" Header="Metal Settings">
