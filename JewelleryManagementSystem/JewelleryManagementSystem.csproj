@@ -19,6 +19,9 @@
 		<Reference Include="DataPath">
 			<HintPath>..\..\DataPath\DataPath\bin\Debug\net8.0-windows\DataPath.dll</HintPath>
 		</Reference>
+		<Reference Include="DBConfig">
+		  <HintPath>..\..\DBConfig\DBConfig\DBConfig\bin\Debug\net9.0-windows7.0\DBConfig.dll</HintPath>
+		</Reference>
 	</ItemGroup>
 
 	<ItemGroup>
@@ -34,6 +37,10 @@
 			<Generator>SettingsSingleFileGenerator</Generator>
 			<LastGenOutput>GeneralSettings.Designer.cs</LastGenOutput>
 		</None>
+	</ItemGroup>
+
+	<ItemGroup>
+	  <Folder Include="Entities\" />
 	</ItemGroup>
 
 </Project>
